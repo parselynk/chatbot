@@ -91,8 +91,8 @@ class ContactInfoConversation extends Conversation
     	$this->ask($emailquestion, function($answer) use($welcomeEmail, $adminNotification){
             // Save result
             $this->email = $this->validateEmail($answer->getText()) ? $answer->getText() : null;
-            $this->client->setEmail($answer->getText());
-            if ($this->client->email) {
+            if ($this->email) {
+                $this->client->setEmail($this->email);
                 \Mail::to($this->client)->send($welcomeEmail);
                 $assignee = $this->ticket->issue($this->payload)->assignee;
                 \Mail::to($assignee)->send($adminNotification);
