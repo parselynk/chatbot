@@ -11,7 +11,7 @@ use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 use Illuminate\Http\Request;
 use Spatie\Regex\Regex;
 use App\Mail\Welcome;
-use App\Mail\ChatBotNotification;
+use App\Mail\NewChatBotNotification;
 use App\Repositories\Contracts\TicketInterface;
 
 
@@ -87,7 +87,7 @@ class ContactInfoConversation extends Conversation
         $assignee = $this->ticket->issue($this->payload)->assignee;
 
         $welcomeEmail = new Welcome($this->ticket);
-        $adminNotification = new ChatBotNotification($this->ticket);
+        $adminNotification = new NewChatBotNotification($this->ticket);
     	$this->ask($emailquestion, function($answer) use($welcomeEmail, $adminNotification){
             // Save result
             $this->email = $this->validateEmail($answer->getText()) ? $answer->getText() : null;

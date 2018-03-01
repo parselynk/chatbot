@@ -32,6 +32,6 @@ class ChatBotNotification extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.ChatBotNotification');
+        return $this->view('mail.notification');
     }
 }
