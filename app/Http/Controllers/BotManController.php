@@ -73,18 +73,21 @@ class BotManController extends Controller
             $bot->startConversation(new ContactInfoConversation($ticket, $this->getPostback()));
         });
 
-        $botman->hears('hello', Listen\HelloBotCommandsController::class.'@handleSayHello');
+        $botman->hears('hello', function (BotMan $bot) {
+            Log::info('here we started');
+            $bot->startConversation(new CustomerConversation());
+        }); 
  
  
         $botman->hears("hello I'm {name}", Listen\HelloBotCommandsController::class.'@handleSayHelloWithName');
 
 
         $botman->fallback(function($bot) {
-
             $user = $bot->getUser();
             $id = $user->getId();
             Log::info("User: $id issued an unknown command");
-                $bot->reply('Sorry, I Don\'t get You');
+                //$bot->reply('Sorry, I Don\'t get You');
+                $bot->startConversation(new CustomerConversation());
             });
 
         $botman->listen();

@@ -5,6 +5,7 @@ namespace App\Http\Conversations;
 
 use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Messages\Conversations\Conversation;
+use App\Http\Conversations\AboutGLNConversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
@@ -97,6 +98,8 @@ class ContactInfoConversation extends Conversation
                 $assignee = $this->ticket->issue($this->payload)->assignee;
                 \Mail::to($assignee)->send($adminNotification);
          	   $this->say('Great - that is all we need, '. $this->client->name .'. We will contact You soon.');
+               $this->say('Meanwhile, maybe you would like to know more about GLN');
+               $this->bot->startConversation(new AboutGLNConversation());
         	} else {
                 unset($this->email);
         		$this->say('I think You have entered a wrong Email.');            
