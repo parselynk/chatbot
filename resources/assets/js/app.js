@@ -7,6 +7,9 @@
 
 require('./bootstrap');
 
+require('./messenger');
+
+
 window.Vue = require('vue');
 
 /**
