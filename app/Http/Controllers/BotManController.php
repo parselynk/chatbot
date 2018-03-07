@@ -72,6 +72,11 @@ class BotManController extends Controller
         $botman->hears('.*(contactinfo)', function ($bot) use ($ticket) {
             $bot->startConversation(new ContactInfoConversation($ticket, $this->getPostback()));
         });
+        $botman->hears('.*(contactinfoweb)', function ($bot) use ($ticket) {
+            $bot->startConversation(new ContactInfoConversation($ticket, $bot->getMessage()->getPayload()));
+            //dd($bot->getMessage()->getPayload());
+            //$bot->say('hi back');
+        });
 
         $botman->hears('hello', function (BotMan $bot) {
             Log::info('here we started');

@@ -14,6 +14,8 @@ use Spatie\Regex\Regex;
 use App\Mail\Welcome;
 use App\Mail\NewChatBotNotification;
 use App\Repositories\Contracts\TicketInterface;
+use Illuminate\Support\Facades\Log;
+
 
 
 class ContactInfoConversation extends Conversation
@@ -21,7 +23,8 @@ class ContactInfoConversation extends Conversation
 
     public $ticket;
     protected $payload;
-    public $client; 
+    public $client;
+    public $email;
 
 
     public function __construct(TicketInterface $ticket,Array $posback)
@@ -46,15 +49,24 @@ class ContactInfoConversation extends Conversation
          ]);
 
     	$this->ask($question, function (Answer $answer) {
-        // Detect if button was clicked:
 
-	        if ($answer->isInteractiveMessageReply()) {
-	            if($answer->getValue() === 'yes'){
-	            	$this->askForDetails();
-	            } else{	            		        	    		
-	            	$this->askFirstname();
-	            }
-	        }
+        // $reply = ($answer->isInteractiveMessageReply()) ? $answer->getValue() : ($this->messagePayload('driver') === 'web') ? $this->messagePayload('message') : null;
+
+        Log::info('Button is clicked: ' . $answer->isInteractiveMessageReply());
+        // Detect if button was clicked:
+    	   if ($answer->isInteractiveMessageReply()) { 
+                $reply = $answer->getValue();
+            } else {
+                if ($this->messagePayload('driver') === 'web'){
+                    $reply = $this->messagePayload('message');
+                }
+            }
+           Log::info('Answer is: ' . $answer->getValue() . ' Replay is: '. $reply);
+    	   if($reply == 'yes'){
+    	       $this->askForDetails();
+    	   } else{	            		        	    		
+    	       $this->askFirstname();
+    	   }
     	});
 	}
 
@@ -67,6 +79,13 @@ class ContactInfoConversation extends Conversation
             $this->askFirstname();
         });
 
+    }
+
+    protected function messagePayload($index){
+        if ($index && $this->bot->getMessage()->getPayload()[$index] ) {
+            return $this->bot->getMessage()->getPayload()[$index];
+        }
+        return  $this->bot->getMessage()->getPayload();
     }
 
     public function askFirstname()
@@ -89,7 +108,7 @@ class ContactInfoConversation extends Conversation
 
         $welcomeEmail = new Welcome($this->ticket);
         $adminNotification = new NewChatBotNotification($this->ticket);
-    	$this->ask($emailquestion, function($answer) use($welcomeEmail, $adminNotification){
+    	$this->ask($emailquestion, function(Answer $answer) use($welcomeEmail, $adminNotification){
             // Save result
             $this->email = $this->validateEmail($answer->getText()) ? $answer->getText() : null;
             if ($this->email) {
