@@ -7,6 +7,8 @@
     <title>BotMan Studio</title>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" type="text/css">
+    <link href="/css/app.css" rel="stylesheet" type="text/css">
+    <link href="/css/messenger.css" rel="stylesheet" type="text/css">
 
     <!-- Styles -->
     <style>
@@ -46,7 +48,7 @@
                 display: flex;
                 flex-direction: column;
             }
-        }
+        /*}*/
         </style>
 
 </head>
@@ -82,11 +84,32 @@
      fjs.parentNode.insertBefore(js, fjs);
    }(document, 'script', 'facebook-jssdk'));
 </script>
-<div class="fb-customerchat"
+<!-- <div class="fb-customerchat"
   page_id="169729017137704"
   logged_in_greeting="Hi! Welcome to GLN, how can we help You?"
   logged_out_greeting="Hi! Welcome to GLN, how can we help You?"
->
+> -->
 </div>
+ <div id="live-chat">
+            <header class="clearfix">
+                <a href="#" class="chat-close">x</a>
+                <h4>Chimaera BOT</h4>
+            <!--<span class="chat-message-counter">3</span>-->
+            </header>
+            <div class="chat">
+                <!-- chat-history cmesseges will be listed here -->
+                <div class="chat-history">
+                </div> 
+                <!-- end chat-history -->
+                <!--<p class="chat-feedback">Your partner is typing…</p>  -->  
+              <form action="#" method="post">
+                    <fieldset>
+                        <input type="text" id="message-text" placeholder="Type your message…" autofocus autocomplete="off">
+                        <input type="hidden">
+                    </fieldset>
+                </form>
+            </div> <!-- end chat -->
+        </div> <!-- end live-chat -->
+        <script src="{{asset('js/app.js')}}"></script>
 </body>
 </html>
