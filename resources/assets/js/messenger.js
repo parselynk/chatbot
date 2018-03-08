@@ -27,7 +27,7 @@ var now;
   			if ($(this).val() != ''){
   				disableUI();
 				addMessage($(this).val());
-				sendData($(this).val());
+				sendData($(this).val(), $(this).val(), controlInput );
 				scrollDown(300);
 				resetInput();
 				return false;
@@ -52,7 +52,7 @@ var now;
 		var payload = $(this).data('payload');
 		var title = $(this).text();
 		addMessage($(this).text());
-		sendData(payload, title);
+		sendData(payload, title, controlInput);
 		scrollDown();
 		resetInput();
 		return false;
@@ -63,7 +63,7 @@ var now;
 		var payload = $(this).find('input:radio').val();
 		var title = $(this).text();
 		addMessage(payload);
-		sendData(payload, title);
+		sendData(payload, title, controlInput);
 		scrollDown();
 		resetInput();
 		return false;
@@ -104,24 +104,34 @@ function setPayload(payload){
 	return payload;
 }
 
-function appendMessageAsHTML(data){
-	var enableUI = function(){
+var controlInput = function(status){
+	
+	$('#live-chat #message-text').prop('disabled' , true);
+
+	if(status){
 		$('#live-chat #message-text').prop('disabled' , false);
-		$('#live-chat .chat-history .chat-message button').prop('disabled' , false);
-		$('#live-chat .btn-group .btn').prop('disabled' , false);
 		$('#live-chat #message-text').focus();
 	}
+}
 
+function appendMessageAsHTML(data, controlInput){
+	var enableUI = function(){
+		$('#live-chat .chat-history .chat-message button').prop('disabled' , false);
+		$('#live-chat .btn-group .btn').prop('disabled' , false);
+	}
 	for(var i = 0, len = data.messages.length; i < len; i++){
 		console.log(data.messages[i].type);
 		if (data.messages[i].type == 'buttons'){
 			generateText(data.messages[i]);
+			controlInput(false);
 			generateButtons(data.messages[i].buttons);
 		} else if (data.messages[i].type == 'actions'){
 			generateText(data.messages[i]);
+			controlInput(false);
 			generateActions(data.messages[i].actions);
 		} else {
 			generateText(data.messages[i]);
+			controlInput(true);
 		}
 	}
 
@@ -155,7 +165,7 @@ function generateButtons(buttons){
 
 }
 
-function sendData(message, title){
+function sendData(message, title, callback){
 	     title = typeof title !== 'undefined' ? title : 'General question';
 	     $.ajax({
          type: 'POST',
@@ -173,7 +183,7 @@ function sendData(message, title){
          	var htmlContext = '';
             // Triggered if response status code is 200 (OK)
             addResponseMessageLayout();
-            appendMessageAsHTML(response);
+            appendMessageAsHTML(response, callback);
             scrollDown(1000);
 			resetInput();
          })
@@ -194,7 +204,7 @@ function messageTime(){
 
 $( document ).ready(function() {
 	messagHistorry.append('<hr><div class="chat-message clearfix"><div class="chat-message-content clearfix"><span class="chat-time">'+messageTime()+'</span><h5>GLN</h5><p>Hi, Welcome to GLN</p></div></div>');
-	sendData('hello');
+	sendData('hello','hello', controlInput);
 });
 
 
