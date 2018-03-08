@@ -75,7 +75,6 @@
 
 #live-chat form {
 	padding: 24px;
-	background-color: #fff;
 }
 
 
@@ -153,12 +152,12 @@
 .chat {
 	border-left: solid #ccc 1px;
 	border-right: solid #ccc 1px;
+	background-color: #fff;
 
 }
 
 .chat-history {
 	height: 252px;
-	background-color: #fff;
 	padding: 8px 24px;
 	overflow-y: scroll;
 }
@@ -185,5 +184,6 @@
 
 .chat-feedback {
 	font-style: italic;	
-	margin: 0 0 0 80px;
+	padding-left: 20px;
+	font-size: 11px;
 }

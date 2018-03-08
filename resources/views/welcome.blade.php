@@ -101,7 +101,7 @@
                 <div class="chat-history">
                 </div> 
                 <!-- end chat-history -->
-                <!--<p class="chat-feedback">Your partner is typing…</p>  -->  
+              <p class="chat-feedback" style="display:none" >ChatBot is typing ...</p> 
               <form action="#" method="post">
                     <fieldset>
                         <input type="text" id="message-text" placeholder="Type your message…" autofocus autocomplete="off">

@@ -12306,12 +12306,14 @@ var now;
 		$('#live-chat #message-text').prop('disabled', true);
 		$('#live-chat .chat-history .chat-message button').prop('disabled', true);
 		$('#live-chat .btn-group .btn').prop('disabled', true);
+		$('.chat-feedback').show(500);
 	}
 
 	enableUI = function enableUI() {
 		$('#live-chat #message-text').prop('disabled', false);
 		$('#live-chat .chat-history .chat-message button').prop('disabled', false);
 		$('#live-chat .btn-group .btn').prop('disabled', false);
+		$('.chat-feedback').hide();
 	};
 
 	$('#live-chat').on('click', '.chat-history .chat-message button', function () {
@@ -12381,6 +12383,7 @@ function appendMessageAsHTML(data, controlInput) {
 	var enableUI = function enableUI() {
 		$('#live-chat .chat-history .chat-message button').prop('disabled', false);
 		$('#live-chat .btn-group .btn').prop('disabled', false);
+		$('.chat-feedback').hide();
 	};
 	for (var i = 0, len = data.messages.length; i < len; i++) {
 		console.log(data.messages[i].type);
@@ -12397,7 +12400,6 @@ function appendMessageAsHTML(data, controlInput) {
 			controlInput(true);
 		}
 	}
-
 	enableUI();
 }
 
