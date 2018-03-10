@@ -8,9 +8,15 @@ window._ = require('lodash');
  */
 
 try {
-    window.$ = window.jQuery = require('jquery');
+    $ = window.$ = window.jQuery = require('jquery');
 
     require('bootstrap');
+    require( 'datatables.net-bs4' )(window, $);
+	require( 'datatables.net-autofill-bs4' )(window, $);
+	require( 'datatables.net-buttons-bs4' )(window, $);
+	require( 'datatables.net-buttons/js/buttons.html5.js' )(window, $);
+	require( 'datatables.net-buttons/js/buttons.print.js' )(window, $);
+	require( 'datatables.net-responsive-bs4' )(window, $);
 } catch (e) {}
 
 /**
