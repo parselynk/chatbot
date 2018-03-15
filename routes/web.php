@@ -15,9 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/sample', function () {
-    return view('layout.master');
-});
+Route::get('/sample', 'TicketController@index');
 
+Route::get('/ticket', 'TicketController@all'); 
+
+Route::get('/ticket/projectsoverview', 'TicketController@projectsOverview');
 Route::match(['get', 'post'], '/botman', 'BotManController@handle');
 Route::get('/botman/tinker', 'BotManController@tinker');

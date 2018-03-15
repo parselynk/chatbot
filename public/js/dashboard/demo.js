@@ -4,8 +4,9 @@ $(document).ready(function () {
      */
     var lineChart = $('#line-chart');
 
-    $('#example').DataTable();
-
+   $('#example').DataTable( {
+        "order": [[ 7 , "desc" ]]
+    } );
 
     if (lineChart.length > 0) {
         new Chart(lineChart, {
