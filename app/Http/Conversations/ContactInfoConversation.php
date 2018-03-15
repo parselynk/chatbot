@@ -103,9 +103,7 @@ class ContactInfoConversation extends Conversation
     public function askEmail($emailquestion)
     {
     	
-        
-        $assignee = $this->ticket->issue($this->payload)->assignee;
-
+        $other_info=[];
         $welcomeEmail = new Welcome($this->ticket);
         $adminNotification = new NewChatBotNotification($this->ticket);
     	$this->ask($emailquestion, function(Answer $answer) use($welcomeEmail, $adminNotification){
@@ -114,7 +112,9 @@ class ContactInfoConversation extends Conversation
             if ($this->email) {
                 $this->client->setEmail($this->email);
                 \Mail::to($this->client)->send($welcomeEmail);
-                $assignee = $this->ticket->issue($this->payload)->assignee;
+                Log::info(print_r(get_class($this->bot->getDriver()),1));
+                Log::info('Project is: ' . url()->full());
+                $assignee = $this->ticket->issue($this->payload,['channel'=>get_class($this->bot->getDriver()), 'project'=>url()->full()])->assignee;
                 \Mail::to($assignee)->send($adminNotification);
          	   $this->say('Great - that is all we need, '. $this->client->name .'. We will contact You soon.');
                $this->say('Meanwhile, maybe you would like to know more about GLN');
