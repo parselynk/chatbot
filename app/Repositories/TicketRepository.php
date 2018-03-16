@@ -62,4 +62,20 @@ class TicketRepository implements TicketInterface {
                      ->get();
 	}
 
+	public function channelsOverview(Model $ticket){
+		return $ticket->selectRaw('count(id) as count, channel as name')
+                     ->where('created_at', '>', Carbon::today()->subWeek())
+                     ->groupBy('channel')
+                     ->get();
+	}
+
+	public function assigneesOverview(Model $ticket){
+		return $ticket->selectRaw('assignees.name, COUNT(tickets.id) as count')
+		            ->join('assignees', 'tickets.department_id', '=', 'assignees.id')
+                     ->where('assignees.created_at', '>', Carbon::today()->subWeek())
+                     ->groupBy('department_id')
+                     ->get();
+	}
+
+
 } 

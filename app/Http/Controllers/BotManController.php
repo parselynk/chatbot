@@ -29,10 +29,9 @@ class BotManController extends Controller
     /**
      * Place your BotMan logic here.
      */
-    public function handle(TicketInterface $ticket)
+    public function handle(TicketInterface $ticket, string $project)
     {
        
-               
         $botman = app('botman');
 
         $botman->hears('getstarted', function (BotMan $bot) {
@@ -69,13 +68,12 @@ class BotManController extends Controller
             $bot->startConversation(new ExistingProductConversation());
         });
 
-        $botman->hears('.*(contactinfo)', function ($bot) use ($ticket) {
+        $botman->hears('.*(contactinfo)', function ($bot) use ($ticket, $project) {
             Log::info('here we are now');
-
-            $bot->startConversation(new ContactInfoConversation($ticket, $this->getPostback()));
+            $bot->startConversation(new ContactInfoConversation($ticket, $project, $this->getPostback()));
         });
-        $botman->hears('.*(contactinfoweb)', function ($bot) use ($ticket) {
-            $bot->startConversation(new ContactInfoConversation($ticket, $bot->getMessage()->getPayload()));
+        $botman->hears('.*(contactinfoweb)', function ($bot) use ($ticket, $project) {
+            $bot->startConversation(new ContactInfoConversation($ticket, $project, $bot->getMessage()->getPayload()));
         });
 
         $botman->hears('hello', function (BotMan $bot) {

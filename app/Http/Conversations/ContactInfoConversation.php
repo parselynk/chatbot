@@ -25,15 +25,18 @@ class ContactInfoConversation extends Conversation
     protected $payload;
     public $client;
     public $email;
+    public $project;
 
 
-    public function __construct(TicketInterface $ticket,Array $posback)
+    public function __construct(TicketInterface $ticket,string $project,Array $posback)
     {
     	
         $this->payload = $posback['payload'];
         $this->ticket = $ticket;
         $this->client = $this->ticket->client;
         $this->client->setConversationTopic($posback['title']);
+        $this->project = $project;
+
     }
 
 
@@ -114,7 +117,8 @@ class ContactInfoConversation extends Conversation
                 \Mail::to($this->client)->send($welcomeEmail);
                 Log::info(print_r(get_class($this->bot->getDriver()),1));
                 Log::info('Project is: ' . url()->full());
-                $assignee = $this->ticket->issue($this->payload,['channel'=>get_class($this->bot->getDriver()), 'project'=>url()->full()])->assignee;
+                $driver = $this->getDriver($this->bot->getDriver());
+                $assignee = $this->ticket->issue($this->payload,['channel'=> $driver, 'project'=> $this->project ])->assignee;
                 \Mail::to($assignee)->send($adminNotification);
          	   $this->say('Great - that is all we need, '. $this->client->name .'. We will contact You soon.');
                $this->say('Meanwhile, maybe you would like to know more about GLN');
@@ -125,6 +129,10 @@ class ContactInfoConversation extends Conversation
         		$this->askEmail('Please enter Your Email one more time');
         	}
         });
+    }
+
+    protected function getDriver($driver){
+        return explode('\\' , get_class($driver))[2];
     }
 
     

@@ -19,6 +19,6 @@ Route::get('/sample', 'TicketController@index');
 
 Route::get('/ticket', 'TicketController@all'); 
 
-Route::get('/ticket/projectsoverview', 'TicketController@projectsOverview');
-Route::match(['get', 'post'], '/botman', 'BotManController@handle');
+Route::get('/test', 'TicketController@test');
+Route::match(['get', 'post'], '/botman/{project}', 'BotManController@handle');
 Route::get('/botman/tinker', 'BotManController@tinker');

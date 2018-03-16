@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Repositories\Contracts\TicketInterface;
 use App\Ticket;
+use App\Assignee;
 
 class TicketController extends Controller
 {
@@ -24,9 +25,14 @@ class TicketController extends Controller
     	$ticket = new Ticket;
         $tickets = $this->ticket->all($ticket);
         $projects = $this->ticket->projectsOverview($ticket);
-        return view('layout.master', compact('tickets','projects'));
+        $assignees = $this->ticket->assigneesOverview($ticket);
+        $channels = $this->ticket->channelsOverview($ticket);
+        return view('layout.master', compact('tickets','projects','assignees','channels'));
     }
 
-    public function projectsOverview(){
+    public function test(){
+    	$ticket = new Ticket;
+    	dd($this->ticket->channelsOverview($ticket));
+
     }
 }
