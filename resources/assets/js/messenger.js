@@ -171,7 +171,7 @@ function sendData(message, title, callback){
 	     title = typeof title !== 'undefined' ? title : 'General question';
 	     $.ajax({
          type: 'POST',
-         url:  'https://lidev02.chimaera.my:7777/botman',
+         url:  'https://lidev02.chimaera.my:7777/botman/GLN',
          dataType : 'json',
          data: 
          { 
