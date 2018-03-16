@@ -252,8 +252,12 @@
 
         <div class="content">
             <div class="container-fluid">
-                @if (count($projects) > 0)
+                @if ($projects && count($projects) > 0)
                 <div class="row">
+                    <div class=" col-md-12">
+                        <h4>Project Overview</h4>
+                        <hr/>
+                    </div>
                     @foreach($projects as $project)
                     <div class="col-md-3">
                         <div class="card p-4">
@@ -261,6 +265,29 @@
                                 <div>
                                     <span class="h4 d-block font-weight-normal mb-2">{{ $project->count }}</span>
                                     <span class="font-weight-light">{{ $project->project }}</span>
+                                </div>
+                                <div class="h2 text-muted">
+                                    <i class="icon icon-people"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+                @if ($assignees && count($assignees) > 0)
+                <div class="row">
+                    <div class=" col-md-12">
+                        <h4>Assignee Overview</h4>
+                        <hr/>
+                    </div>
+                    @foreach($assignees as $assignee)
+                    <div class="col-md-3">
+                        <div class="card p-4">
+                            <div class="card-body d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="h4 d-block font-weight-normal mb-2">{{ $assignee['name'] }}</span>
+                                    <span class="font-weight-light">{{ $assignee['count'] }}</span>
                                 </div>
 
                                 <div class="h2 text-muted">
@@ -272,79 +299,17 @@
                     @endforeach
                 </div>
                 @endif
-                    <div class="row">
-                    <div class="col-md-3">
-                        <div class="card p-4">
-                            <div class="card-body d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="h4 d-block font-weight-normal mb-2">$32,400</span>
-                                    <span class="font-weight-light">Income</span>
-                                </div>
-
-                           <div class="h2 text-muted">
-                                    <i class="icon icon-wallet"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>     
-                    <div class="col-md-3">
-                        <div class="card p-4">
-                            <div class="card-body d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="h4 d-block font-weight-normal mb-2">$32,400</span>
-                                    <span class="font-weight-light">Income</span>
-                                </div>
-
-                           <div class="h2 text-muted">
-                                    <i class="icon icon-wallet"></i>
-                                </div>
-                            </div>
-                        </div>
+                @if ($channels && count($channels) > 0)
+                <div class="row">
+                    <div class=" col-md-12">
+                        <h4>Channel Overview</h4>
+                        <hr/>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card p-4">
-                            <div class="card-body d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="h4 d-block font-weight-normal mb-2">$32,400</span>
-                                    <span class="font-weight-light">Income</span>
-                                </div>
-
-                           <div class="h2 text-muted">
-                                    <i class="icon icon-wallet"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>        
-                    <div class="col-md-3">
-                        <div class="card p-4">
-                            <div class="card-body d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="h4 d-block font-weight-normal mb-2">900</span>
-                                    <span class="font-weight-light">Downloads</span>
-                                </div>
-
-                                <div class="h2 text-muted">
-                                    <i class="icon icon-cloud-download"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="card p-4">
-                            <div class="card-body d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="h4 d-block font-weight-normal mb-2">32s</span>
-                                    <span class="font-weight-light">Time</span>
-                                </div>
-
-                                <div class="h2 text-muted">
-                                    <i class="icon icon-clock"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @foreach($channels as $item)
+                        @include('dashboard.overview.card')
+                    @endforeach
                 </div>
+                @endif
                 <div class="row ">
                     <div class="col-md-12">
                         <div class="card">
@@ -382,6 +347,7 @@
                         </div>
                     </div>
                 </div>
+            @if($tickets && count($tickets))
                 <div class="row ">
                     <div class="col-md-12">
                     <div class="card">
@@ -432,9 +398,10 @@
                               </table>
                             </div>
                         </div>
-                    </div>
+                      </div>
                     </div>
                 </div>
+            @endif   
             </div>
         </div>
     </div>
