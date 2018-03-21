@@ -13,6 +13,8 @@ class TicketController extends Controller
 	protected $ticket;
 
 	public function __construct(TicketInterface $ticket){
+        
+        $this->middleware('auth');
 		$this->ticket = $ticket;
 	}
 

@@ -17,13 +17,18 @@ Route::get('/', function () {
 
 Route::get('/sample', 'TicketController@index');
 
-Route::get('/ticket', 'TicketController@all'); 
+Route::get('/ticket', 'TicketController@all')->name('home'); 
 
 Route::get('/test', 'TicketController@test');
 Route::match(['get', 'post'], '/botman/{project}', 'BotManController@handle');
 Route::get('/botman/tinker', 'BotManController@tinker');
 
-
-Route::get('/login','SessionController@create');
+Route::get('/login','SessionController@create')->name('login');
+Route::post('/login','SessionController@store');
+Route::get('/logout','SessionController@destroy');
 Route::get('/register','RegistrationController@create');
+Route::post('/register','RegistrationController@store');
+
+Route::get('/user','UserController@index');
+
 
