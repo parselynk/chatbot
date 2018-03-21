@@ -52,14 +52,17 @@ class TicketRepository implements TicketInterface {
 	}
 
 	public function all(Model $ticket){
-		return $ticket->latest()->get();
+		$tickets = $ticket->latest();
+		$tickets->filter(request(['date-filter','project-filter','channel-filter','assignee-filter']));
+		return $tickets->get();
 	}
 
 	public function projectsOverview(Model $ticket){
-		return $ticket->selectRaw('count(id) as count, project')
+		return $ticket->selectRaw('count(id) as count, project as name')
                      ->where('created_at', '>', Carbon::today()->subWeek())
                      ->groupBy('project')
-                     ->get();
+                     ->get()
+                     ->toArray();
 	}
 
 	public function channelsOverview(Model $ticket){
@@ -77,5 +80,20 @@ class TicketRepository implements TicketInterface {
                      ->get();
 	}
 
+	public function availableFilters(Model $ticket){
+		
+		$department = $ticket->selectRaw('assignees.name as assignee, null as project, null as channel')
+				             ->join('assignees', 'tickets.department_id', '=', 'assignees.id')
+						     ->groupBy('tickets.department_id');
+		   
+		   $project = $ticket->selectRaw('null as assignee, project, null as channel')
+						     ->groupBy('project');
+		
+		return $ticket->selectRaw('null as assignee, null as project, channel')
+						     ->groupBy('channel')
+						     ->union($department)
+						     ->union($project)
+						     ->get();
 
+	}
 } 

@@ -22,17 +22,19 @@ class TicketController extends Controller
     }
 
     public function all(){
+        
     	$ticket = new Ticket;
         $tickets = $this->ticket->all($ticket);
         $projects = $this->ticket->projectsOverview($ticket);
         $assignees = $this->ticket->assigneesOverview($ticket);
         $channels = $this->ticket->channelsOverview($ticket);
-        return view('layout.master', compact('tickets','projects','assignees','channels'));
+        $filters = $this->ticket->availableFilters($ticket);
+        return view('dashboard.index', compact('tickets','projects','assignees','channels','filters'));
     }
 
     public function test(){
     	$ticket = new Ticket;
-    	dd($this->ticket->channelsOverview($ticket));
+    	dd($this->ticket->availableFilters($ticket));
 
     }
 }
