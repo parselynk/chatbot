@@ -22,3 +22,8 @@ Route::get('/ticket', 'TicketController@all');
 Route::get('/test', 'TicketController@test');
 Route::match(['get', 'post'], '/botman/{project}', 'BotManController@handle');
 Route::get('/botman/tinker', 'BotManController@tinker');
+
+
+Route::get('/login','SessionController@create');
+Route::get('/register','RegistrationController@create');
+
