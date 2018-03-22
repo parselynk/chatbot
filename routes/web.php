@@ -28,7 +28,11 @@ Route::post('/login','SessionController@store');
 Route::get('/logout','SessionController@destroy');
 Route::get('/register','RegistrationController@create');
 Route::post('/register','RegistrationController@store');
+Route::get('/profile','UserController@profile');
+Route::post('/profile/update','SessionController@update');
+
 
 Route::get('/user','UserController@index');
+
 
 

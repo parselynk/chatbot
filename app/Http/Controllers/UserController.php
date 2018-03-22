@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Auth;
 
 class UserController extends Controller
 {
@@ -18,5 +19,19 @@ class UserController extends Controller
     	$users = User::latest()->get();
 
     	return view('users.index',compact('users'));
+    }
+
+    public function edit(){
+
+    	$user = Auth::user();
+
+    	return view('users.edit',compact('user'));
+    }
+
+    public function profile(){
+
+    	$user = Auth::user();
+
+    	return view('users.profile',compact('user'));
     }
 }

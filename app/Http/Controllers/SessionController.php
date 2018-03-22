@@ -28,7 +28,8 @@ class SessionController extends Controller
         ];
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
     	$this->validate(request(), 
 
     		['id_email' => 'required',
@@ -39,7 +40,7 @@ class SessionController extends Controller
         $field = filter_var(request()->input('id_email'), FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
         request()->all()[$field] = request('id_email');
         $request->request->add([$field => request('id_email')]);
-        
+
     	if(!auth()->attempt(request([$field ,'password']))) {
     		return back()->withErrors([
     			'message' => ' Check your credentials and try again.'
@@ -48,5 +49,25 @@ class SessionController extends Controller
 
     	return redirect()->home();
     	
+    }
+
+    public function update()
+    {
+        $this->validate(request(), 
+            ['email' => 'required|email',
+            'name' => 'required']
+            );
+        $user = auth()->user();
+        try{
+            $user->update(request(['name','email']));
+        } catch(\Exception $e){
+            return back()->withErrors([
+                "message" => " This Email already exists. "
+            ]);
+        }
+        session()->flash('message','Profile has been updated');
+
+        return redirect()->back();
+
     }
 }

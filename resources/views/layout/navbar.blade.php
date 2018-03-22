@@ -35,6 +35,9 @@
 
                 <div class="dropdown-menu dropdown-menu-right">
                     <div class="dropdown-header">Account</div>
+                    <a href="/profile" class="dropdown-item">
+                        <i class="fa fa-lock"></i> Edit
+                    </a>
                     <a href="/logout" class="dropdown-item">
                         <i class="fa fa-lock"></i> Logout
                     </a>
