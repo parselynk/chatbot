@@ -8,7 +8,7 @@
                     <i class="icon icon-speedometer"></i> Dashboard
                 </a>
             </li>
-
+    @hasanyrole('super admin|admin')
             <li class="nav-title">Users</li>
 
             <li class="nav-item">
@@ -16,13 +16,15 @@
                     <i class="icon icon-user"></i> Users 
                 </a>
             </li>
-
+        @hasanyrole('super admin|admin')
 
             <li class="nav-item">
                 <a href="/register" class="nav-link">
                     <i class="icon icon-user-follow"></i> Create user 
                 </a>
             </li>
+        @endhasanyrole
+    @endhasanyrole
         </ul>
     </nav>
 </div>

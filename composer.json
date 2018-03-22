@@ -21,6 +21,7 @@
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
         "mpociot/slack-client": "^0.3.0",
+        "spatie/laravel-permission": "^2.9",
         "spatie/regex": "^1.2"
     },
     "require-dev": {

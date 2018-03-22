@@ -12,12 +12,14 @@
                         <tr>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>Role</th>                        
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>Role</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -25,6 +27,17 @@
                         <tr>
                             <td>{{$user->name}}</td>
                             <td>{{$user->email}}</td>
+                            <td>   
+                            @if(count($user->getRoleNames()) > 0)     
+                                @foreach($user->getRoleNames() as $role) 
+                                    <ul class="list-unstyled">
+                                        <li>{{ $role }}</li>
+                                    </ul>
+                                @endforeach
+                            @else
+                            NA
+                            @endif
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>
