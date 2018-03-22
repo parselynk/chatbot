@@ -8,9 +8,7 @@ $(document).ready(function () {
         "order": [[ 7 , "desc" ]]
     } );
 
-    $('#usersTable').DataTable( {
-        "order": [[ 1 , "desc" ]]
-    } );
+    $('#usersTable').DataTable();
 
     if (lineChart.length > 0) {
         new Chart(lineChart, {
