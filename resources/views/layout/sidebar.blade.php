@@ -12,7 +12,7 @@
             <li class="nav-title">Users</li>
 
             <li class="nav-item">
-                <a href="/users" class="nav-link">
+                <a href="/user" class="nav-link">
                     <i class="icon icon-user"></i> Users 
                 </a>
             </li>
