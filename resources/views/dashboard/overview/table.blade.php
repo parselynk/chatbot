@@ -38,11 +38,11 @@
                             <td>{{$ticket->id}}</td>
                             <td>{{$ticket->title}}</td>
                             <td>{{$ticket->body}}</td>
-                            <td>{{$ticket->client->name . ' - ' .$ticket->client->email }}</td>
+                            <td class="text-nowrap">{{$ticket->client->name . ' - ' .$ticket->client->email }}</td>
                             <td>{{$ticket->assignee->name }}</td>
                             <td>{{$ticket->channel}}</td>
                             <td>{{$ticket->project}}</td>
-                            <td>{{$ticket->created_at}}</td>
+                            <td class="text-nowrap">{{$ticket->created_at}}</td>
                         </tr>
                     @endforeach
                     </tbody>
