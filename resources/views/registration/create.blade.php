@@ -30,6 +30,7 @@
                                 <label class="form-control-label">Confirm Password</label>
                                 <input name="password_confirmation" id="password_confirmation" type="password" class="form-control">
                             </div>
+                            @include('layout.error')
                         </div>
 
                         <div class="card-footer">

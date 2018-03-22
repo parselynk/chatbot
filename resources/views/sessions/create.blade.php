@@ -20,20 +20,7 @@
                                 <label class="form-control-label">Password</label>
                                 <input name="password" type="password" class="form-control">
                             </div>
-
-<!--                             <div class="custom-control custom-checkbox mt-4">
-                                <input type="checkbox" class="custom-control-input" id="login">
-                                <label class="custom-control-label" for="login">Check this custom checkbox</label>
-                            </div> -->
-                            @if(count($errors))
-                                <div class="alert alert-danger  mt-5" role="alert">
-                                    @foreach($errors->all() as $error) 
-                                        <ul>
-                                            <li>{{ $error }}</li>
-                                        </ul>
-                                    @endforeach
-                                </div>
-                            @endif
+                            @include('layout.error')
                         </div>
                         <div class="card-footer">
                             <div class="row">
