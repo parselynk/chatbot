@@ -16,7 +16,7 @@
                     <i class="icon icon-user"></i> Users 
                 </a>
             </li>
-        @hasanyrole('super admin|admin')
+        @hasanyrole('super admin')
 
             <li class="nav-item">
                 <a href="/register" class="nav-link">
