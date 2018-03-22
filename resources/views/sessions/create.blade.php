@@ -12,8 +12,8 @@
                         {{ csrf_field() }}
                         <div class="card-body py-5">
                             <div class="form-group">
-                                <label class="form-control-label">Email</label>
-                                <input name="email" type="email" class="form-control">
+                                <label class="form-control-label">Username or Email</label>
+                                <input name="id_email" type="text" class="form-control">
                             </div>
 
                             <div class="form-group">
