@@ -26,14 +26,23 @@ class RegistrationController extends Controller
     		'password' => 'required|confirmed',
     	]);
 
-    	$user = User::create([
-    		'name' => request('name'),
-    		'email' => request('email'),
-    		'password' => bcrypt(request('password'))
-    	]);
 
-    	auth()->login($user);
 
-    	return redirect()->home();
+        try{
+
+        $user = User::create([
+                'name' => request('name'),
+                'email' => request('email'),
+                'password' => bcrypt(request('password'))
+            ]);        
+        } catch(\Exception $e){
+            return back()->withErrors([
+                "message" => " This Email already exists. "
+            ]);
+        }
+
+        session()->flash('message','User: "'. request('name') .'" has been created.');
+
+    	return redirect('/user');
     }
 }
