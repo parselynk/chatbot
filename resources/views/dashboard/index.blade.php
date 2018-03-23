@@ -12,7 +12,7 @@
                         Filters
                     </div>
                     <div class="card-body">
-                    	<form class="form-inline" method="GET" action="/ticket">
+                    	<form class="form-inline" method="GET" action="/">
                             <select id="date-select" class="form-control mb-3 mr-sm-3 col-2" name="date-filter">
 	                            <option value>Select Date</option>
 	                            <option value="2 weeks ago"
