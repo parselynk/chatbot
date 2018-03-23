@@ -75,7 +75,7 @@ class TicketRepository implements TicketInterface {
 	public function assigneesOverview(Model $ticket){
 		return $ticket->selectRaw('assignees.name, COUNT(tickets.id) as count')
 		            ->join('assignees', 'tickets.department_id', '=', 'assignees.id')
-                     ->where('assignees.created_at', '>', Carbon::today()->subWeek())
+                     ->where('tickets.created_at', '>', Carbon::today()->subWeek())
                      ->groupBy('department_id')
                      ->get();
 	}
