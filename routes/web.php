@@ -11,13 +11,13 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/messenger', function () {
     return view('welcome');
 });
 
 Route::get('/sample', 'TicketController@index');
 
-Route::get('/ticket', 'TicketController@all')->name('home'); 
+Route::get('/', 'TicketController@all')->name('home'); 
 
 Route::get('/test', 'TicketController@test');
 Route::match(['get', 'post'], '/botman/{project}', 'BotManController@handle');
