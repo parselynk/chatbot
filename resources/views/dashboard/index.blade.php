@@ -15,11 +15,11 @@
                     	<form class="form-inline" method="GET" action="/">
                     	<div class="form-group w-5">
     						<label for="start-date" class="mb-3 mr-1" >Since:</label>
-                    		<input id="start-date" name="startdate-filter"  class="form-control mb-3 mr-sm-3 datepicker " style="width: auto" value = "{{ !empty(request('startdate-filter')) ? request('startdate-filter') : Carbon\Carbon::today()->subWeek()->format('Y-m-d') }}">
+                    		<input id="start-date" name="startdate-filter"  class="form-control mb-3 mr-sm-3 datepicker " style="width: auto" value = "{{ empty(request('startdate-filter')) || request('startdate-filter') ? request('startdate-filter') : Carbon\Carbon::today()->subWeek()->format('Y-m-d') }}">
                     	</div>
                     	<div class="form-group w-5">
     						<label for="start-date" class="mb-3 mr-1" >Until:</label>
-                    		<input id="end-date" name="enddate-filter"  class="form-control mb-3 mr-sm-3 datepicker " value = "{{ !empty(request('enddate-filter')) ? request('enddate-filter') : Carbon\Carbon::today()->format('Y-m-d') }}">
+                    		<input id="end-date" name="enddate-filter"  class="form-control mb-3 mr-sm-3 datepicker " value = "{{ empty(request('enddate-filter')) || request('enddate-filter') ? request('enddate-filter') : Carbon\Carbon::today()->format('Y-m-d') }}">
                     	</div>
 	                        <select id="project-select" class="form-control mb-3 mr-sm-3 col-1" name="project-filter">
 	                            <option value>All Projects</option>
