@@ -29,11 +29,12 @@ class Ticket extends Model
 
     public function scopeFilter($query, $filters){
         if ($filters){
-            if ($date = $filters['date-filter']){
-                if($date != 'all'){
-                  $query->whereDate('created_at', '>=', Carbon::parse($date)->format('Y-m-d'));
-                }
+            if ($start = $filters['startdate-filter']){
+                  $query->whereDate('created_at', '>=', Carbon::createFromFormat('Y-m-d', $start)->toDateString());
             }
+            if ($end = $filters['enddate-filter']){
+                  $query->whereDate('created_at', '<=', Carbon::createFromFormat('Y-m-d', $end)->toDateString());
+                }
             if ($assignee = $filters['assignee-filter']){
                 $query->whereHas('assignee', function ($query) use ($assignee) {
                     $query->where('name',  $assignee);
@@ -47,8 +48,7 @@ class Ticket extends Model
                 $query->where('project', $project);
             }
         } else {
-            $query->where('created_at', '>', Carbon::today()->subWeek());
+            $query->where('created_at', '>=', Carbon::today()->subWeek()->format('Y-m-d'));
         }
-
     }
 }

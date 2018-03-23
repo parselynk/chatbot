@@ -13,7 +13,6 @@ use App\Ticket;
 use App\Assignee;
 
 
-
 class TicketRepository implements TicketInterface {
 
 	public $id;
@@ -53,13 +52,13 @@ class TicketRepository implements TicketInterface {
 
 	public function all(Model $ticket){
 		$tickets = $ticket->latest();
-		$tickets->filter(request(['date-filter','project-filter','channel-filter','assignee-filter']));
+		$tickets->filter(request(['startdate-filter','enddate-filter','project-filter','channel-filter','assignee-filter']));
 		return $tickets->get();
 	}
 
 	public function projectsOverview(Model $ticket){
 		return $ticket->selectRaw('count(id) as count, project as name')
-                     ->where('created_at', '>', Carbon::today()->subWeek())
+                     ->where('created_at', '>=', Carbon::today()->subWeek())
                      ->groupBy('project')
                      ->get()
                      ->toArray();
@@ -67,7 +66,7 @@ class TicketRepository implements TicketInterface {
 
 	public function channelsOverview(Model $ticket){
 		return $ticket->selectRaw('count(id) as count, channel as name')
-                     ->where('created_at', '>', Carbon::today()->subWeek())
+                     ->where('created_at', '>=', Carbon::today()->subWeek())
                      ->groupBy('channel')
                      ->get();
 	}
@@ -75,7 +74,7 @@ class TicketRepository implements TicketInterface {
 	public function assigneesOverview(Model $ticket){
 		return $ticket->selectRaw('assignees.name, COUNT(tickets.id) as count')
 		            ->join('assignees', 'tickets.department_id', '=', 'assignees.id')
-                     ->where('tickets.created_at', '>', Carbon::today()->subWeek())
+                     ->where('tickets.created_at', '>=', Carbon::today()->subWeek())
                      ->groupBy('department_id')
                      ->get();
 	}

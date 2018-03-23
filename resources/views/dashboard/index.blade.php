@@ -13,66 +13,16 @@
                     </div>
                     <div class="card-body">
                     	<form class="form-inline" method="GET" action="/">
-                            <select id="date-select" class="form-control mb-3 mr-sm-3 col-2" name="date-filter">
-	                            <option value>Select Date</option>
-	                            <option value="2 weeks ago"
-	        						@if(request('date-filter') && request('date-filter') == '2 weeks ago') 
-										selected
-									@endif
-	                            >Last 2 weeks</option>
-	                            <option value="3 weeks ago"
-				        			@if(request('date-filter') && request('date-filter') == '3 weeks ago') 
-										selected
-									@endif
-	                            >Last 3 weeks</option>
-	                            <option value="last month"
-				        			@if(request('date-filter') && request('date-filter') == 'last month') 
-										selected
-									@endif
-	                            >Last Month</option>
-	                            <option value="first day of this month"
-				        			@if(request('date-filter') && request('date-filter') == 'first day of this month') 
-										selected
-									@endif
-	                            >This Month</option>	                            
-	                            <option value="2 months ago"
-				        			@if(request('date-filter') && request('date-filter') == '2 months ago') 
-										selected
-									@endif	  
-								>Last 2 Months</option>
-	                            <option value="3 months ago"
-				        			@if(request('date-filter') && request('date-filter') == '3 months ago') 
-										selected
-									@endif	 
-	                            >Last 3 Months</option>
-	                            <option value="first day of january this year"
-				        			@if(request('date-filter') && request('date-filter') == 'first day of january this year') 
-										selected
-									@endif	 	                            
-								>This Year</option>
-	                            <option value="last year"
-				        			@if(request('date-filter') && request('date-filter') == 'last year') 
-										selected
-									@endif	 
-	                            >Since Last Year</option>
-	                            <option value="2 years ago"
-				        			@if(request('date-filter') && request('date-filter') == '2 years ago') 
-										selected
-									@endif	 
-	                            >Since 2 years ago</option>
-	                            <option value="3 years ago"
-									@if(request('date-filter') && request('date-filter') == '3 years ago') 
-										selected
-									@endif	 
-	                            >Since 3 years ago</option>
-	                            <option value="all"
-									@if(request('date-filter') && request('date-filter') == 'all') 
-										selected
-									@endif	 
-	                            >All</option>
-	                        </select>
-	                        <select id="project-select" class="form-control mb-3 mr-sm-3 col-2" name="project-filter">
-	                            <option value>Select Project</option>
+                    	<div class="form-group w-5">
+    						<label for="start-date" class="mb-3 mr-1" >Since:</label>
+                    		<input id="start-date" name="startdate-filter"  class="form-control mb-3 mr-sm-3 datepicker " style="width: auto" value = "{{ !empty(request('startdate-filter')) ? request('startdate-filter') : Carbon\Carbon::today()->subWeek()->format('Y-m-d') }}">
+                    	</div>
+                    	<div class="form-group w-5">
+    						<label for="start-date" class="mb-3 mr-1" >Until:</label>
+                    		<input id="end-date" name="enddate-filter"  class="form-control mb-3 mr-sm-3 datepicker " value = "{{ !empty(request('enddate-filter')) ? request('enddate-filter') : Carbon\Carbon::today()->format('Y-m-d') }}">
+                    	</div>
+	                        <select id="project-select" class="form-control mb-3 mr-sm-3 col-1" name="project-filter">
+	                            <option value>All Projects</option>
 	                            @foreach($filters as $filter)
 	                            	@if($filter['project'])
 	                            		<option value="{{$filter['project']}}" 
@@ -84,8 +34,8 @@
 	                            	@endif
 	                            @endforeach
 	                        </select>
-	                        <select id="channel-select" class="form-control mb-3 mr-sm-3 col-2" name="channel-filter">
-	                            <option value>Select Channel</option>
+	                        <select id="channel-select" class="form-control mb-3 mr-sm-3 col-1" name="channel-filter">
+	                            <option value>All Channels</option>
 	                            @foreach($filters as $filter)
 	                            	@if($filter['channel'])
 	                            		<option value="{{$filter['channel']}}"
@@ -96,8 +46,8 @@
 	                            	@endif
 	                            @endforeach
 	                        </select>
-	                        <select id="assignee-select" class="form-control mb-3 mr-sm-3 col-2" name="assignee-filter">
-	                            <option value>Select Assignee</option>
+	                        <select id="assignee-select" class="form-control mb-3 mr-sm-3 col-1" name="assignee-filter">
+	                            <option value>All Assignees</option>
 	                            @foreach($filters as $filter)
 	                            	@if($filter['assignee'])
 	                            		<option value="{{$filter['assignee']}}"

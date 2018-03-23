@@ -10,6 +10,10 @@ $(document).ready(function () {
 
     $('#usersTable').DataTable();
 
+    $('.datepicker').datepicker({
+       format: "yyyy-mm-dd"
+    });
+
     if (lineChart.length > 0) {
         new Chart(lineChart, {
             type: 'line',
