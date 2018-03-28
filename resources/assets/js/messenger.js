@@ -101,9 +101,10 @@ function resetInput(){
 }
 
 function setPayload(payload){
-	if (payload.indexOf("contactinfo") > -1 ) {
-		return payload + 'web';
-	}
+	//Intial version of messenger - kept just for reference
+	// if (payload.indexOf("contactinfo") > -1 ) {
+	// 	return payload + 'web';
+	// }
 	return payload;
 }
 

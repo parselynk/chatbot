@@ -70,10 +70,7 @@ class BotManController extends Controller
 
         $botman->hears('.*(contactinfo)', function ($bot) use ($ticket, $project) {
             Log::info('here we are now');
-            $bot->startConversation(new ContactInfoConversation($ticket, $project, $this->getPostback()));
-        });
-        $botman->hears('.*(contactinfoweb)', function ($bot) use ($ticket, $project) {
-            $bot->startConversation(new ContactInfoConversation($ticket, $project, $bot->getMessage()->getPayload()));
+            $bot->startConversation(new ContactInfoConversation($ticket, $project, $this->getPostback($bot)));
         });
 
         $botman->hears('hello', function (BotMan $bot) {
@@ -102,8 +99,9 @@ class BotManController extends Controller
     }
 
 
-    public function getPostback(){
-        return request('entry')[0]['messaging'][0]['postback'];
+    public function getPostback($bot){
+        $postback = request('entry')[0]['messaging'][0]['postback'];
+        return  $postback &&  $postback != '' ? $postback : $bot->getMessage()->getPayload();
     }
 
     /**
