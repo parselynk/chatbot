@@ -20,11 +20,13 @@ class TicketRepository implements TicketInterface {
 	public $client;
 	public $channel;
 	public $project;
+	protected $ticket;
 
 
-	public function __construct(AssigneeInterface $assignee, ClientInterface $client){
+	public function __construct(AssigneeInterface $assignee, ClientInterface $client, /** Model*/ $model){
 		$this->assignee = $assignee;
 		$this->client = $client;
+		$this->ticket = $model; // for decoupling purpose.
 	}
 
 	public function issue($payload, $other_info){
@@ -50,45 +52,45 @@ class TicketRepository implements TicketInterface {
 		return $timestamp.str_random($legnth);
 	}
 
-	public function all(Model $ticket){
-		$tickets = $ticket->latest();
+	public function all(){
+		$tickets = $this->ticket->latest();
 		$tickets->filter(request(['startdate-filter','enddate-filter','project-filter','channel-filter','assignee-filter']));
 		return $tickets->get();
 	}
 
-	public function projectsOverview(Model $ticket){
-		return $ticket->selectRaw('count(id) as count, project as name')
+	public function projectsOverview(){
+		return $this->ticket->selectRaw('count(id) as count, project as name')
                      ->where('created_at', '>=', Carbon::today()->subWeek())
                      ->groupBy('project')
                      ->get()
                      ->toArray();
 	}
 
-	public function channelsOverview(Model $ticket){
-		return $ticket->selectRaw('count(id) as count, channel as name')
+	public function channelsOverview(){
+		return $this->ticket->selectRaw('count(id) as count, channel as name')
                      ->where('created_at', '>=', Carbon::today()->subWeek())
                      ->groupBy('channel')
                      ->get();
 	}
 
-	public function assigneesOverview(Model $ticket){
-		return $ticket->selectRaw('assignees.name, COUNT(tickets.id) as count')
+	public function assigneesOverview(){
+		return $this->ticket->selectRaw('assignees.name, COUNT(tickets.id) as count')
 		            ->join('assignees', 'tickets.department_id', '=', 'assignees.id')
                      ->where('tickets.created_at', '>=', Carbon::today()->subWeek())
                      ->groupBy('department_id')
                      ->get();
 	}
 
-	public function availableFilters(Model $ticket){
+	public function availableFilters(){
 		
-		$department = $ticket->selectRaw('assignees.name as assignee, null as project, null as channel')
+		$department = $this->ticket->selectRaw('assignees.name as assignee, null as project, null as channel')
 				             ->join('assignees', 'tickets.department_id', '=', 'assignees.id')
 						     ->groupBy('tickets.department_id');
 		   
-		   $project = $ticket->selectRaw('null as assignee, project, null as channel')
+		   $project = $this->ticket->selectRaw('null as assignee, project, null as channel')
 						     ->groupBy('project');
 		
-		return $ticket->selectRaw('null as assignee, null as project, channel')
+		return $this->ticket->selectRaw('null as assignee, null as project, channel')
 						     ->groupBy('channel')
 						     ->union($department)
 						     ->union($project)
