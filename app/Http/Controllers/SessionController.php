@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+
+
 
 class SessionController extends Controller
 {
@@ -68,6 +72,45 @@ class SessionController extends Controller
         session()->flash('message','Profile has been updated');
 
         return redirect()->back();
+
+    }
+
+
+    public function resetPassword()
+    {
+        //validate inputs
+        $this->validate(request(),[
+            'current-password' => 'required',
+            'new-password' => 'required|confirmed|min:6',
+        ]);
+
+        //find authenticated user
+        $user = auth()->user();
+
+
+        if (!Hash::check(request('current-password'), $user->password)) {
+            return back()->withErrors([
+                "message" => " Your current password is not correct."
+            ]);
+        }
+        //update user
+        try{
+            $user->update(['password' => bcrypt(request('new-password'))]);
+        } catch(\Exception $e){
+            return back()->withErrors([
+                "message" => " Reset password failed, Please try again. "
+            ]);
+        }
+        //login user again if its required
+        //return message
+        session()->flash('message','You password has been updated successfully.');
+        return redirect()->back();
+
+    }
+
+    public function resetForgottenPassword()
+    {
+      //  $user = DB::table('reset_passwords')->where('token', $token)->first();
 
     }
 }

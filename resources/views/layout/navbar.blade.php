@@ -38,6 +38,9 @@
                     <a href="/profile" class="dropdown-item  {{ Request::is('profile') ? 'active':' ' }} ">
                         <i class="fa fa-lock"></i> Edit
                     </a>
+                    <a href="/resetpassword" class="dropdown-item  {{ Request::is('resetpassword') ? 'active':' ' }} ">
+                        <i class="fa fa-lock"></i> Reset Password
+                    </a>
                     <a href="/logout" class="dropdown-item">
                         <i class="fa fa-lock"></i> Logout
                     </a>

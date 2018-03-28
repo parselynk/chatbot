@@ -31,6 +31,8 @@ Route::post('/register','RegistrationController@store');
 Route::get('/profile','UserController@profile');
 Route::post('/profile/update','SessionController@update');
 
+Route::get('/resetpassword','UserController@resetPassword');
+Route::post('/resetpassword','SessionController@resetPassword');
 
 Route::get('/user','UserController@index');
 

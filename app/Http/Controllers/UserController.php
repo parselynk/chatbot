@@ -34,4 +34,15 @@ class UserController extends Controller
 
     	return view('users.profile',compact('user'));
     }
+
+    public function resetPassword(){
+
+        return view('users.resetpassword');
+    }
+
+    public function resetForgottenPassword($token){
+
+
+        return view('users.profile');
+    }
 }
