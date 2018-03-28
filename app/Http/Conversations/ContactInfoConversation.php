@@ -53,8 +53,6 @@ class ContactInfoConversation extends Conversation
 
     	$this->ask($question, function (Answer $answer) {
 
-        // $reply = ($answer->isInteractiveMessageReply()) ? $answer->getValue() : ($this->messagePayload('driver') === 'web') ? $this->messagePayload('message') : null;
-
         Log::info('Button is clicked: ' . $answer->isInteractiveMessageReply());
         // Detect if button was clicked:
     	   if ($answer->isInteractiveMessageReply()) { 
@@ -65,11 +63,13 @@ class ContactInfoConversation extends Conversation
                 }
             }
            Log::info('Answer is: ' . $answer->getValue() . ' Replay is: '. $reply);
+
     	   if($reply == 'yes'){
     	       $this->askForDetails();
     	   } else{	            		        	    		
     	       $this->askFirstname();
     	   }
+           
     	});
 	}
 
