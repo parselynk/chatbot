@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -103,14 +102,9 @@ class SessionController extends Controller
         }
         //login user again if its required
         //return message
-        session()->flash('message','You password has been updated successfully.');
+        session()->flash('message','Your password has been updated successfully.');
         return redirect()->back();
 
     }
 
-    public function resetForgottenPassword()
-    {
-      //  $user = DB::table('reset_passwords')->where('token', $token)->first();
-
-    }
 }

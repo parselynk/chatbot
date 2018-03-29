@@ -34,6 +34,13 @@ Route::post('/profile/update','SessionController@update');
 Route::get('/resetpassword','UserController@resetPassword');
 Route::post('/resetpassword','SessionController@resetPassword');
 
+Route::get('/forgotpassword','ForgetPasswordController@askForEmail');
+Route::post('/forgotpassword','ForgetPasswordController@sendToken');
+
+Route::get('/resetpassword/{token}','ForgetPasswordController@askForNewPassword');
+Route::post('/resetforgottenpassword','ForgetPasswordController@store');
+
+
 Route::get('/user','UserController@index');
 
 
