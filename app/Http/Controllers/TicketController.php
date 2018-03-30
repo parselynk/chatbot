@@ -17,12 +17,12 @@ class TicketController extends Controller
 		$this->ticket = $ticket;
 	}
 
-    public function index(){
-    	//return view('posts.index', compact('posts','archives'));
-        return view('layout.master');
-    }
+    // public function index(){
+    // 	//return view('posts.index', compact('posts','archives'));
+    //     return view('layout.master');
+    // }
 
-    public function all(){
+    public function index(){
         
         $tickets = $this->ticket->all();
         $projects = $this->ticket->projectsOverview();
@@ -30,6 +30,13 @@ class TicketController extends Controller
         $channels = $this->ticket->channelsOverview();
         $filters = $this->ticket->availableFilters();
         return view('dashboard.index', compact('tickets','projects','assignees','channels','filters'));
+    }
+
+    public function tickets(){
+        $tickets = $this->ticket->all();
+        $filters = $this->ticket->availableFilters();
+        
+        return view('dashboard.tickets', compact('tickets','filters'));
     }
 
     public function test(){

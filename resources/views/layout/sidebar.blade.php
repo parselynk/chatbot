@@ -16,6 +16,11 @@
                     <i class="icon icon-user"></i> Users 
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="/tickets" class="nav-link {{ Request::is('tickets') ? 'active':' ' }}">
+                    <i class="fa fa-ticket"></i> Tickets 
+                </a>
+            </li>
         @hasanyrole('super admin')
 
             <li class="nav-item">

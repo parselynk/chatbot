@@ -17,7 +17,11 @@ Route::get('/messenger', function () {
 
 Route::get('/sample', 'TicketController@index');
 
-Route::get('/', 'TicketController@all')->name('home'); 
+Route::get('/', 'TicketController@index')->name('home'); 
+
+
+Route::get('/tickets', 'TicketController@tickets'); 
+
 
 Route::get('/test', 'TicketController@test');
 Route::match(['get', 'post'], '/botman/{project}', 'BotManController@handle');
