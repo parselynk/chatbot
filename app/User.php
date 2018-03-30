@@ -29,4 +29,13 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+
+    public function isSuperAdmin(){
+        return $this->hasRole('super admin');
+    }
+
+    public function isAdmin(){
+        return $this->hasRole('admin');
+    }
 }
