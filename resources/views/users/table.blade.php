@@ -12,7 +12,8 @@
                         <tr>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Role</th>                        
+                            <th>Role</th>
+                            <th>Actions</th>                        
                         </tr>
                     </thead>
                     <tfoot>
@@ -20,6 +21,7 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Role</th>
+                            <th>Actions</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -35,8 +37,15 @@
                                     </ul>
                                 @endforeach
                             @else
-                            NA
+                                NA
                             @endif
+                            </td>
+                            <td>
+                            @can('sa-update-user')
+                                <a class="btn btn-primary" href="{{url('/permission/' . $user->id)}}" role="button">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </a>
+                            @endcan
                             </td>
                         </tr>
                     @endforeach

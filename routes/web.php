@@ -47,5 +47,8 @@ Route::post('/resetforgottenpassword','ForgetPasswordController@store');
 
 Route::get('/user','UserController@index');
 
+Route::get('/permission/{user}','PermissionController@index');
+Route::post('/permission','PermissionController@update');
+
 
 

@@ -8,28 +8,28 @@
                     <i class="icon icon-speedometer"></i> Dashboard
                 </a>
             </li>
-    @hasanyrole('super admin|admin')
-            <li class="nav-title">Users</li>
-
-            <li class="nav-item">
-                <a href="/user" class="nav-link {{ Request::is('user') ? 'active':' ' }}">
-                    <i class="icon icon-user"></i> Users 
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="/tickets" class="nav-link {{ Request::is('tickets') ? 'active':' ' }}">
-                    <i class="fa fa-ticket"></i> Tickets 
-                </a>
-            </li>
-        @hasanyrole('super admin')
-
-            <li class="nav-item">
-                <a href="/register" class="nav-link {{ Request::is('register') ? 'active':' ' }} ">
-                    <i class="icon icon-user-follow"></i> Create user 
-                </a>
-            </li>
-        @endhasanyrole
-    @endhasanyrole
+            @hasanyrole('super admin|admin')
+                <li class="nav-item">
+                    <a href="/tickets" class="nav-link {{ Request::is('tickets') ? 'active':' ' }}">
+                        <i class="fa fa-ticket"></i> Tickets 
+                    </a>
+                </li>
+            @endhasanyrole
+            @can('sa-view-user')
+                <li class="nav-title">Users</li>
+                <li class="nav-item">
+                    <a href="/user" class="nav-link {{ Request::is('user') ? 'active':' ' }}">
+                        <i class="icon icon-user"></i> Users 
+                    </a>
+                </li>
+            @endcan
+            @can('sa-create-user')
+                <li class="nav-item">
+                    <a href="/register" class="nav-link {{ Request::is('register') ? 'active':' ' }} ">
+                        <i class="icon icon-user-follow"></i> Create user 
+                    </a>
+                </li>
+            @endcan
         </ul>
     </nav>
 </div>
