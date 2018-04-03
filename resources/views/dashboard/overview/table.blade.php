@@ -1,4 +1,4 @@
-@if($filters && count($filters) > 0)
+@if(isset($filters) && count($filters) > 0)
     <div class="row">
       <div class="col-md-12">
         <div class="card">
