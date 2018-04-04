@@ -30,6 +30,14 @@
                     </a>
                 </li>
             @endcan
+            @can('sa-view-permission')
+                <li class="nav-title">Permissions</li>
+                <li class="nav-item">
+                    <a href="/permission" class="nav-link {{ Request::is('permission') ? 'active':' ' }} ">
+                        <i class="icon icon-user-follow"></i> Permissions
+                    </a>
+                </li>
+            @endcan
         </ul>
     </nav>
 </div>

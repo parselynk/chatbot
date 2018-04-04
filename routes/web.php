@@ -50,5 +50,13 @@ Route::get('/user','UserController@index');
 Route::get('/permission/{user}','PermissionController@index');
 Route::post('/permission','PermissionController@update');
 
+Route::get('/permission','PermissionController@create');
+Route::get('/permission/delete/{permission}','PermissionController@delete');
+
+Route::post('/permission/create','PermissionController@store');
+
+
+
+
 
 

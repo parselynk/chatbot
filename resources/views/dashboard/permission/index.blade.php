@@ -9,10 +9,7 @@
                   {{ $title }}
               </div>
               <div class="card-body">
-
-                @include('layout.alert')
                 @include('dashboard.permission.table')
-                       
               </div>         
           </div>
         </div>

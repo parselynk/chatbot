@@ -28,6 +28,31 @@ class PermissionController extends Controller
 
     }
 
+    public function delete($permission_name)
+    {
+
+        if(empty($permission_name) || !isset($permission_name)){
+            return back()->withErrors([
+                "message" => "No permission is selected"
+            ]); 
+        }
+
+        try{
+            $this->permission->delete($permission_name);
+
+        } catch(\Exception $e){
+            Log::error($e->getMessage());
+            report($e);
+            return back()->withErrors([
+                "message" => $e->getMessage()
+            ]);
+        }
+
+        session()->flash('message','Permission is deleted');
+        return redirect()->back();
+       
+    }
+
     public function update()
     {
 
@@ -46,6 +71,36 @@ class PermissionController extends Controller
         session()->flash('message','User\'s permissions are updated');
         return redirect()->back();
     }
+
+    public function create()
+    {
+        $rows = $this->permission->all();
+        $title = "Add new permissions";
+        return view('dashboard.permission.create', compact('rows','title'));
+    }
+
+    public function store()
+    {
+        $this->validate(request(), 
+            ['name' => 'required|min:4',
+            'category' => 'required', 
+            'action' => 'required']
+        );
+
+    $name = request('category').'-'.request('action').'-'.strtolower(request('name'));
+    $guard = null !== request('guard_name') ? request('guard_name') : null ;
+    try{
+        $this->permission->create($name, $guard);
+        } catch(\Exception $e){
+            Log::error($e->getMessage());
+            report($e);
+            return back()->withErrors([
+                "message" => $e->getMessage()
+            ]);
+        }
+        session()->flash('message','New permission  "'. $name .'"  is registered');
+        return redirect()->back();
+     }
 
     // create
     // update
