@@ -89,6 +89,7 @@ class PermissionController extends Controller
         );
 
     $name = request('category').'-'.request('action').'-'.strtolower(request('name'));
+    echo "Nmae is: $name";
     $guard = null !== request('guard_name') ? request('guard_name') : null ;
     try{
         $this->permission->create($name, $guard);
