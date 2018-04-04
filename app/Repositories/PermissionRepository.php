@@ -4,7 +4,6 @@ namespace App\Repositories;
 use App\Repositories\Contracts\PermissionInterface;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Support\Facades\DB;
 use App\User;
 
 
@@ -60,15 +59,10 @@ class PermissionRepository implements PermissionInterface
 	}
 
 	public function create($name, $guard = null){
-		echo "Repository name is: $name & Guard is: $guard";
 		$prmission_exist = ($guard) ? 
 			Permission::where('name' , $name) : 
 			Permission::where('name' , $name)->where('guard_name' , $guard);
-			print_r(DB::getQueryLog());
-
-			print_r($prmission_exist->get());
 	   if( $prmission_exist->count() === 0) {
-	   	echo 'Count: '.$prmission_exist->count();
 	   		return Permission::create(['name' => $name]);
 	   }
 

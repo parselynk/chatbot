@@ -81,7 +81,6 @@ class PermissionController extends Controller
 
     public function store()
     {
-        print_r(request()->all());
         $this->validate(request(), 
             ['name' => 'required|min:4',
             'category' => 'required', 
@@ -89,9 +88,7 @@ class PermissionController extends Controller
         );
 
     $name = request('category').'-'.request('action').'-'.strtolower(request('name'));
-    echo "Name is: $name";
     $guard = null !== request('guard_name') ? request('guard_name') : null ;
-    echo "Guard is: $guard";
     try{
         $this->permission->create($name, $guard);
         } catch(\Exception $e){

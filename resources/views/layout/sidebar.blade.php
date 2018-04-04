@@ -15,23 +15,29 @@
                     </a>
                 </li>
             @endhasanyrole
+            @can('sa-view-user')
                 <li class="nav-title">Users</li>
                 <li class="nav-item">
                     <a href="/user" class="nav-link {{ Request::is('user') ? 'active':' ' }}">
                         <i class="icon icon-user"></i> Users 
                     </a>
                 </li>
+            @endcan
+            @can('sa-create-user')
                 <li class="nav-item">
                     <a href="/register" class="nav-link {{ Request::is('register') ? 'active':' ' }} ">
                         <i class="icon icon-user-follow"></i> Create user 
                     </a>
                 </li>
+            @endcan
+            @can('sa-view-permission')
                 <li class="nav-title">Permissions</li>
                 <li class="nav-item">
                     <a href="/permission" class="nav-link {{ Request::is('permission') ? 'active':' ' }} ">
                         <i class="icon icon-user-follow"></i> Permissions
                     </a>
                 </li>
+            @endcan
         </ul>
     </nav>
 </div>
