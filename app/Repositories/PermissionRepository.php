@@ -68,7 +68,7 @@ class PermissionRepository implements PermissionInterface
 
 			print_r($prmission_exist->get());
 	   if( $prmission_exist->count() === 0) {
-	   	echo 'Count: '.$prmission_exist->count();die;
+	   	echo 'Count: '.$prmission_exist->count();
 	   		return Permission::create(['name' => $name]);
 	   }
 
