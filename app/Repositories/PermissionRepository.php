@@ -24,6 +24,9 @@ class PermissionRepository implements PermissionInterface
 	public function all(){
 		$permissions = Permission::get();
 		$permissions_list = [];
+		if(empty($permissions)){
+			$permissions_list = [];
+		}
 		foreach ($permissions as $permission){
 			$permission_array = explode('-', $permission->name);
 			$first_segment = $permission_array[0];
