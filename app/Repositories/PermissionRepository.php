@@ -59,8 +59,12 @@ class PermissionRepository implements PermissionInterface
 	}
 
 	public function create($name, $guard = null){
-		$prmission_exist = ($guard) ? Permission::where('name' , $name) : Permission::where('name' , $name)->where('guard_name' , $guard) ;
+		$prmission_exist = ($guard) ? 
+			Permission::where('name' , $name) : 
+			Permission::where('name' , $name)->where('guard_name' , $guard);
+			print_r($prmission_exist->get());
 	   if( !$prmission_exist->count()) {
+	   	echo $prmission_exist->count();die;
 	   		return Permission::create(['name' => $name]);
 	   }
 
