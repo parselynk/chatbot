@@ -81,6 +81,7 @@ class PermissionController extends Controller
 
     public function store()
     {
+        dd(request()->all());
         $this->validate(request(), 
             ['name' => 'required|min:4',
             'category' => 'required', 
