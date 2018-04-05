@@ -47,7 +47,7 @@ class PermissionController extends Controller
                 "message" => $e->getMessage()
             ]);
         }
-
+        Cache()->flush();
         session()->flash('message','Permission is deleted');
         return redirect()->back();
        
@@ -75,19 +75,41 @@ class PermissionController extends Controller
     public function create()
     {
         $rows = $this->permission->all();
+        $registered_permissions = array_flatten($rows);
+
+        $available_actions = [];
+
+        foreach(config('navigations')['navigations'] as $name => $groups){
+           foreach($groups as $name => $nav){
+                if($nav['permission']){
+                    $available_actions[] =  $nav['permission'];
+                }
+            }
+        }
+
+        $remaining_permissions = array_diff($available_actions, $registered_permissions);
+
+
+        // $sorted = array_map(function($value){
+        //     $seperated = explode('-',$value);
+        //     $key = '';
+        //     $key  .=  strtolower($seperated[0]) == 'sa' ? 'Super Admin' : ((strtolower($seperated[0]) == 'a') ? 'Admin' : 'Miscellaneous');
+        //     return  [$key => $value] ;
+
+        // }, $remaining_permissions);
+
+
         $title = "Permissions";
-        return view('dashboard.permission.create', compact('rows','title'));
+        return view('dashboard.permission.create', compact('rows','title','remaining_permissions'));
     }
 
     public function store()
     {
         $this->validate(request(), 
-            ['name' => 'required|min:4',
-            'category' => 'required', 
-            'action' => 'required']
+            ['permission' => 'required']
         );
 
-    $name = request('category').'-'.request('action').'-'.strtolower(request('name'));
+    $name = request('permission');
     $guard = null !== request('guard_name') ? request('guard_name') : null ;
     try{
         $this->permission->create($name, $guard);

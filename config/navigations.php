@@ -26,7 +26,7 @@ return [
             'Tickets' => [
                 'path' => '/tickets',
                 'visibility' => true, // to appear on sidebar
-                'permission' => null,
+                'permission' => 'sa-view-ticket',
                 'permission_descreption' => null,
                 'icon' => 'fa fa-ticket'
             ],
