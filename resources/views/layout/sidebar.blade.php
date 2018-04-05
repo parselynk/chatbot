@@ -1,7 +1,29 @@
 <div class="sidebar">
     <nav class="sidebar-nav">
         <ul class="nav">
-            <li class="nav-title">Tickets</li>
+            @if(isset($navigations) && count($navigations) > 0)
+                @foreach($navigations as $title => $items)
+                    <li class="nav-title">{{title_case($title)}}</li>
+                    @foreach($items as $name => $values)
+                        @if($values['visibility'])
+                            <li class="nav-item">
+                                @if($values['permission'])
+                                    @can($values['permission'])
+                                        <a href="{{ $values['path']}}" class="nav-link {{ Request::is(str_after($values['path'], '/')) ||  Request::is($values['path'])? 'active':' ' }}">
+                                        <i class="{{$values['icon']}}"></i> {{$name}}
+                                        </a>
+                                    @endcan
+                                @else
+                                    <a href="{{ $values['path']}}" class="nav-link {{ Request::is(str_after($values['path'], '/')) ||  Request::is($values['path']) ? 'active':' ' }}">
+                                    <i class="{{$values['icon']}}"></i> {{$name}}
+                                    </a>
+                                @endif  
+                                </li>
+                        @endif
+                    @endforeach
+                @endforeach
+            @endif
+<!--             <li class="nav-title">Tickets</li>
 
             <li class="nav-item">
                 <a href="/" class="nav-link {{ Request::is('/') ? 'active':' ' }}">
@@ -37,7 +59,7 @@
                         <i class="icon icon-user-follow"></i> Permissions
                     </a>
                 </li>
-            @endcan
+            @endcan -->
         </ul>
     </nav>
 </div>

@@ -11,6 +11,8 @@
 |
 */
 
+
+
 Route::get('/messenger', function () {
     return view('welcome');
 });

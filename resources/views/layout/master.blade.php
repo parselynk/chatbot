@@ -14,7 +14,8 @@
     @include('layout.navbar')
     <div class="main-container">
         @if (Auth::check())
-        @include('layout.sidebar')
+        @include('layout.sidebar',['navigations' => config('navigations')['navigations']]);
+])
         @endif
         @yield('content')
     </div>
