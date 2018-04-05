@@ -75,7 +75,7 @@ class PermissionController extends Controller
     public function create()
     {
         $rows = $this->permission->all();
-        $title = "Add new permissions";
+        $title = "Permissions";
         return view('dashboard.permission.create', compact('rows','title'));
     }
 
