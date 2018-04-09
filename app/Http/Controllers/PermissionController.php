@@ -26,7 +26,8 @@ class PermissionController extends Controller
     	$username = title_case($user->name);
     	$title = "User({$username}) permissions";
         $action = "/permission";
-    	return view('dashboard.permission.index', compact('rows','user_permissions','model','title','action'));
+        $user_role_update = true;
+    	return view('dashboard.permission.index', compact('rows','user_permissions','model','title','action','user_role_update'));
 
     }
 

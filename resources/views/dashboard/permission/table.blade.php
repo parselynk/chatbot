@@ -64,7 +64,6 @@
         @endforeach
       </tbody>
     </table>
-    @include('layout.error')
     <div class="row float-right pr-3">
       <button type="submit" class="btn btn-primary">Save changes</button>
     </div>

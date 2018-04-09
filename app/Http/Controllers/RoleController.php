@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use App\Repositories\Contracts\RoleInterface;
 use App\Repositories\Contracts\PermissionInterface;
 use Spatie\Permission\Models\Role;
+use App\User;
+
 
 
 
