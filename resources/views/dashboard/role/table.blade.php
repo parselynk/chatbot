@@ -35,11 +35,17 @@
                             @endif
                             </td>
                             <td>
-                            @can('sa-update-role')
+                            @hasanyrole('super admin')
                                 <a class="btn btn-primary" href="{{url('/role/' . $role->id)}}" role="button">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a>
-                            @endcan
+                            @else 
+                                @can('sa-update-role')
+                                    <a class="btn btn-primary" href="{{url('/role/' . $role->id)}}" role="button">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    </a>
+                                @endcan
+                            @endhasanyrole
                             </td>
                         </tr>
                     @endforeach
