@@ -32,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->when('App\Repositories\PermissionRepository')->needs('$user')->give(function(){
             return new User;
         });
+        $this->app->bind('App\Repositories\Contracts\RoleInterface', 'App\Repositories\RoleRepository');
         //inject a new instance of Ticket model to TicketRepository
         $this->app->when('App\Repositories\TicketRepository')->needs('$model')->give(function(){
             return new Ticket;
