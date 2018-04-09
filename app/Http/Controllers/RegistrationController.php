@@ -31,13 +31,18 @@ class RegistrationController extends Controller
         $user = User::create([
                 'name' => request('name'),
                 'email' => request('email'),
+                'role' => request('role'),
                 'password' => bcrypt(request('password'))
-            ]);        
+            ]);  
+
+        $user->assignRole(request('role'));
+
         } catch(\Exception $e){
             return back()->withErrors([
                 "message" => " This Email already exists. "
             ]);
         }
+
 
         session()->flash('message','User: "'. request('name') .'" has been created.');
 

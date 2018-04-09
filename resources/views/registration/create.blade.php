@@ -30,6 +30,16 @@
                                 <label class="form-control-label">Confirm Password</label>
                                 <input name="password_confirmation" id="password_confirmation" type="password" class="form-control">
                             </div>
+                            <div class="form-group">
+                                <label class="form-control-label">Roles</label>
+                                <select id="role-select" class="form-control mb-3 mr-sm-3" name="role">
+                                <option value>Select User's role</option>
+                                <option value="super admin">Super admin</option>
+                                <option value="admin">Admin</option>
+                                 <option value="miscellaneous">Miscellaneous</option>
+                                </select>
+                            </div>
+
                             @include('layout.error')
                         </div>
 
