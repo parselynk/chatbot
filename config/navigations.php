@@ -40,14 +40,14 @@ return [
                 'visibility' => true, // to appear on sidebar
                 'permission' => 'sa-view-user',
                 'permission_descreption' => 'access to users\' table',
-                'icon' => 'icon icon-user'
+                'icon' => 'fa fa-user'
             ],
             'Create user' => [
                 'path' => '/register',
                 'visibility' => true, // to appear on sidebar
                 'permission' => 'sa-create-user',
                 'permission_descreption' => 'can create user',
-                'icon' => 'icon icon-user-follow'
+                'icon' => 'fa fa-user-plus'
             ],
             'Delete user' => [
                 'path' => null,
@@ -58,13 +58,13 @@ return [
             ]
         ],
 
-        'Permissions' => [
+        'Access Management' => [
             'Permissions' => [
                 'path' => '/permission',
                 'visibility' => true, // to appear on sidebar
                 'permission' => 'sa-view-permission',
                 'permission_descreption' => 'access to permissions\' table',
-                'icon' => 'icon icon-user-follow'
+                'icon' => 'icon-lock icons'
             ],
             'Create permission' => [
                 'path' => null, // it is just a permission, not a navigation on sidebar
@@ -78,6 +78,21 @@ return [
                 'visibility' => false, // to appear on sidebar
                 'permission' => 'sa-delete-permission',
                 'permission_descreption' => 'can delete permission',
+                'icon' => null,
+            ],
+            'Roles' => [
+                'path' => '/role', // it is just a permission, not a navigation on sidebar
+                'visibility' => true, // to appear on sidebar
+                'permission' => 'sa-view-role',
+                'permission_descreption' => 'can view role',
+                'icon' => 'fa fa-users',
+            ]
+            ,
+            'Update Role' => [
+                'path' => '/role', // it is just a permission, not a navigation on sidebar
+                'visibility' => false, // to appear on sidebar
+                'permission' => 'sa-update-role',
+                'permission_descreption' => 'can update role',
                 'icon' => null,
             ]
         ],

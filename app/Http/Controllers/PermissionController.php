@@ -21,10 +21,12 @@ class PermissionController extends Controller
     {
 
     	$user_permissions = $user->getAllPermissions();
+        $model = $user;
     	$rows = $this->permission->all();
     	$username = title_case($user->name);
     	$title = "User({$username}) permissions";
-    	return view('dashboard.permission.index', compact('rows','user_permissions','user','title'));
+        $action = "/permission";
+    	return view('dashboard.permission.index', compact('rows','user_permissions','model','title','action'));
 
     }
 
@@ -55,8 +57,6 @@ class PermissionController extends Controller
 
     public function update()
     {
-
-
     	try{
 			$this->permission->update();
 

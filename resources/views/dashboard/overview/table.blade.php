@@ -60,13 +60,13 @@
       </div>
     </div>
 @endif
-@if($tickets && count($tickets) > 0 )
     <div class="row ">
         <div class="col-md-12">
         <div class="card">
             <div class="card-header bg-light">
                 {{ $title }}
             </div>
+            @if($tickets && count($tickets) > 0 )
             <div class="card-body">
               <div class="table-responsive">
                  <table id="example" class="table table-hover " cellspacing="0" width="100%">
@@ -111,7 +111,10 @@
                 </table>
               </div>
           </div>
+          @else 
+             <div class="card-body text-center text-danger"><h3 class='p-5'> No ticket has been issued since 7 days ago </h3></div>
+          @endif
           </div>
         </div>
     </div>
-@endif
+

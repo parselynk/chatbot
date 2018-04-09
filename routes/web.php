@@ -12,7 +12,6 @@
 */
 
 
-
 Route::get('/messenger', function () {
     return view('welcome');
 });
@@ -56,6 +55,12 @@ Route::get('/permission','PermissionController@create');
 Route::get('/permission/delete/{permission}','PermissionController@delete');
 
 Route::post('/permission/create','PermissionController@store');
+
+
+Route::get('/role','RoleController@index');
+Route::post('/role','RoleController@update');
+
+Route::get('/role/{role}','RoleController@permissions');
 
 
 

@@ -7,12 +7,18 @@
                     @foreach($items as $name => $values)
                         @if($values['visibility'])
                             <li class="nav-item">
-                                @if($values['permission'])
-                                    @can($values['permission'])
-                                        <a href="{{ $values['path']}}" class="nav-link {{ Request::is(str_after($values['path'], '/')) ||  Request::is($values['path'])? 'active':' ' }}">
+                                @if(isset($values['permission']))
+                                    @hasanyrole('super admin')
+                                         <a href="{{ $values['path']}}" class="nav-link {{ Request::is(str_after($values['path'], '/')) ||  Request::is($values['path']) ? 'active':' ' }}">
                                         <i class="{{$values['icon']}}"></i> {{$name}}
                                         </a>
-                                    @endcan
+                                    @else 
+                                        @can($values['permission'])
+                                            <a href="{{ $values['path']}}" class="nav-link {{ Request::is(str_after($values['path'], '/')) ||  Request::is($values['path'])? 'active':' ' }}">
+                                            <i class="{{$values['icon']}}"></i> {{$name}}
+                                            </a>
+                                        @endcan
+                                    @endhasanyrole
                                 @else
                                     <a href="{{ $values['path']}}" class="nav-link {{ Request::is(str_after($values['path'], '/')) ||  Request::is($values['path']) ? 'active':' ' }}">
                                     <i class="{{$values['icon']}}"></i> {{$name}}

@@ -4,6 +4,7 @@
         <div class="container-fluid">
               <div class="row ">
         <div class="col-md-12">
+          @include('layout.alert')
           <div class="card">
               <div class="card-header bg-light">
                   {{ $title }}

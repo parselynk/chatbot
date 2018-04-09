@@ -20,7 +20,14 @@
           @foreach($items as $index=>$row )
             <tr class="text-center">
               <th scope="row">
-                <a href="/permission/delete/{{$index}}"><i class="fa fa-trash text-danger" aria-hidden="true"></i></a>
+                @hasanyrole('super admin')
+                  <a href="/permission/delete/{{$index}}"><i class="fa fa-trash text-danger" aria-hidden="true"></i></a>
+                @else 
+                  @can('sa-delete-permission')
+                    <a href="/permission/delete/{{$index}}"><i class="fa fa-trash text-danger" aria-hidden="true"></i></a>
+                  @endcan
+                @endhasanyrole
+
                 {{ title_case($index) }}
               </th>
                 <td >

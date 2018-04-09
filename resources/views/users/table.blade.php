@@ -41,11 +41,17 @@
                             @endif
                             </td>
                             <td>
-                            @can('sa-update-user')
-                                <a class="btn btn-primary" href="{{url('/permission/' . $user->id)}}" role="button">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            @hasanyrole('super admin')
+                                 <a class="btn btn-primary" href="{{url('/permission/' . $user->id)}}" role="button">
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a>
-                            @endcan
+                            @else 
+                                 @can('sa-update-user')
+                                    <a class="btn btn-primary" href="{{url('/permission/' . $user->id)}}" role="button">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    </a>
+                                @endcan
+                            @endhasanyrole
                             </td>
                         </tr>
                     @endforeach

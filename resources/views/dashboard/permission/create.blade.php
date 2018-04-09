@@ -19,8 +19,8 @@
                             <form class="form-inline" method="POST" action="/permission/create">
                               {{ csrf_field() }}
                               <select id="category-select" class="form-control mb-3 mr-sm-3 col-1" name="permission">
+                                <option value>Permissions</option>
                                 @foreach($remaining_permissions as $permission)
-                                  <option value>Permissions</option>
                                   <option value={{ $permission }}>{{ $permission }}</option>
                                 @endforeach
                               </select>
