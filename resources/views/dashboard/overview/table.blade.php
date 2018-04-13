@@ -3,7 +3,7 @@
       <div class="col-md-12">
         <div class="card">
             <div class="card-header bg-light">
-                Filters
+                Filters 
             </div>
             <div class="card-body">
                 <form class="form-inline" method="GET" action="{{ request()->path() }}">
@@ -19,12 +19,17 @@
                         <option value>All Projects</option>
                         @foreach($filters as $filter)
                             @if($filter['project'])
-                                <option value="{{$filter['project']}}" 
-                                    @if(request('project-filter') && request('project-filter') == $filter['project']) 
-                                        selected
-                                    @endif
-                                >{{$filter['project']}}
-                                </option>
+                                @if( $user->hasAnyRole(['super admin','admin']) || 
+                                    $user->can('ms-view-'.strtolower($filter['project']).'-project'))  
+                                    <option value="{{$filter['project']}}" 
+                                        @if(request('project-filter') && request('project-filter') == $filter['project']) 
+                                            selected
+                                        @endif
+                                    >{{$filter['project']}}
+                                    </option>
+                                @else
+                                    { continue; }
+                                @endif
                             @endif
                         @endforeach
                     </select>
@@ -32,11 +37,17 @@
                         <option value>All Channels</option>
                         @foreach($filters as $filter)
                             @if($filter['channel'])
-                                <option value="{{$filter['channel']}}"
-                                @if(request('channel-filter') && request('channel-filter') == $filter['channel']) 
-                                    selected
+                                @if( $user->hasAnyRole(['super admin','admin']) || 
+                                    $user->can('ms-view-'.strtolower($filter['channel']).'-channel'))  
+                                    <option value="{{$filter['channel']}}"
+                                    @if(request('channel-filter') && request('channel-filter') == $filter['channel']) 
+                                        selected
+                                    @endif
+                                    >{{$filter['channel']}}
+                                    </option>
+                                @else
+                                    { continue; }
                                 @endif
-                                >{{$filter['channel']}}</option>
                             @endif
                         @endforeach
                     </select>
@@ -44,11 +55,17 @@
                         <option value>All Assignees</option>
                         @foreach($filters as $filter)
                             @if($filter['assignee'])
-                                <option value="{{$filter['assignee']}}"
-                                @if(request('assignee-filter') && request('assignee-filter') == $filter['assignee']) 
-                                    selected
+                                @if( $user->hasAnyRole(['super admin','admin']) || 
+                                    $user->can('ms-view-'.strtolower($filter['assignee']).'-assignee'))  
+                                    <option value="{{$filter['assignee']}}"
+                                    @if(request('assignee-filter') && request('assignee-filter') == $filter['assignee']) 
+                                        selected
+                                    @endif
+                                    >{{$filter['assignee']}}
+                                    </option>
+                                @else
+                                    { continue; }
                                 @endif
-                                >{{$filter['assignee']}}</option>
                             @endif
                         @endforeach                             
                     </select>

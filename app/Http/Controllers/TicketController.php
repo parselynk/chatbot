@@ -24,19 +24,23 @@ class TicketController extends Controller
 
     public function index(){
         
-        $tickets = $this->ticket->all();
+        $user = auth()->user();
+        $userFilters = userTicketPermission($user , ['assignee','project','channel']);
+        $tickets = $this->ticket->all($userFilters);
         $projects = $this->ticket->projectsOverview();
         $assignees = $this->ticket->assigneesOverview();
         $channels = $this->ticket->channelsOverview();
         $filters = $this->ticket->availableFilters();
-        return view('dashboard.index', compact('tickets','projects','assignees','channels','filters'));
+        return view('dashboard.index', compact('tickets','projects','assignees','channels','filters','user'));
     }
 
     public function tickets(){
-        $tickets = $this->ticket->all();
-        $filters = $this->ticket->availableFilters();
         
-        return view('dashboard.tickets', compact('tickets','filters'));
+        $user = auth()->user();
+        $userFilters = userTicketPermission($user , ['assignee','project','channel']);
+        $tickets = $this->ticket->all($userFilters);
+        $filters = $this->ticket->availableFilters();
+        return view('dashboard.tickets', compact('tickets','filters','user'));
     }
 
     public function test(){

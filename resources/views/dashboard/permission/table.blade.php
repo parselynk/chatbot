@@ -80,7 +80,7 @@
     @if(isset($ticket_permissions) && count($ticket_permissions) > 0)
       <div class="card">
           <div class="card-header bg-light">
-              Access Permissions
+              Access Permissions 
           </div>
           <div class="card-body">
             <div class="card-group">
@@ -92,9 +92,9 @@
                           @foreach($permissions as $permission=>$row)
                               <li class="list-group-item"> 
                                 @if(array_key_exists('view', $row))
-                                  &nbsp;&nbsp;<input name="{{$row['view']}}" data-type="view" type="checkbox" value ="{{$row['view']}} " 
-                                  {{ (in_array($row['view'], $registered_permissions)) ? ($model->hasPermissionTo($row['view'])) ? "checked" : "" : ""}} >
-                                  <strong>{{ $permission }} </strong>
+                                  &nbsp;&nbsp;<input name="{{title_case($row['view'])}}" data-type="view" type="checkbox" value ="{{strtolower($row['view'])}}" 
+                                  {{ (in_array(strtolower($row['view']), $registered_permissions)) ? ($model->hasPermissionTo(strtolower($row['view']))) ? "checked" : "" : ""}} >
+                                  <strong>{{ title_case($permission) }} </strong>
                                 @endif
                               </li>
                           @endforeach
