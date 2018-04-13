@@ -42,6 +42,36 @@ function prepare_ticket_permissions($permissions)
 	return $permissions_list;
 }
 
+function userTicketPermission($user, $permission_group)
+{
+	$permissions_list = [];	
+	
+	if(!isset($user) || !$user || !isset($permission_group) 
+		|| !is_array($permission_group) || count($permission_group) < 1){
+			return $permissions_list;
+	}
+	
+	$permissions = $user->permissions;
+
+
+	foreach ($permission_group as $group){
+		foreach ($permissions as $permission){
+
+			$permission_array = explode('-', $permission->name);
+
+			if(count($permission_array) === 4) {
+				$last_segment = $permission_array[3];
+				if(strtolower($group) === $last_segment){
+					$permissions_list[$group][] = $permission_array[2];
+				}
+			}
+		}
+	}
+
+	return $permissions_list;
+
+}
+
 
 
 function generateTicketPermission($permissions, $permission_group)
