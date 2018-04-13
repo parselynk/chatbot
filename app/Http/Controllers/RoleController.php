@@ -32,7 +32,7 @@ class RoleController extends Controller
 	{
 		$rows = $this->permission->all();
 		$model = $role;
-		$title = "Role permissions";
+		$title = "Role($role->name) permissions";
 		$action = "/role";
     	return view('dashboard.permission.index', compact('rows','model','title', 'action'));
 	}
