@@ -55,7 +55,6 @@ class TicketRepository implements TicketInterface {
 
 	public function all($userFilters = null){
 
-		print_r($userFilters);
 		$tickets = $this->ticket->latest();
 
 
