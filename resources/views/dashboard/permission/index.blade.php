@@ -8,14 +8,7 @@
           @if(isset($user_role_update) && $user_role_update)
             @include('dashboard.permission.userrole')
           @endif
-        <div class="card">
-          <div class="card-header bg-light">
-              {{ $title }}
-          </div>
-          <div class="card-body">
-            @include('dashboard.permission.table')
-          </div>         
-        </div>
+            @include('dashboard.permission.table')     
           @include('layout.error')
         </div>
     </div>

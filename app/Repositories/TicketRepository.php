@@ -47,15 +47,63 @@ class TicketRepository implements TicketInterface {
 		return $this;
 	}
 
-	protected function generateID($legnth = 8){
+	protected function generateID($legnth = 8)
+	{
 		$timestamp = Carbon::now()->timestamp;
 		return $timestamp.str_random($legnth);
 	}
 
 	public function all(){
+
 		$tickets = $this->ticket->latest();
 		$tickets->filter(request(['startdate-filter','enddate-filter','project-filter','channel-filter','assignee-filter']));
 		return $tickets->get();
+	}
+
+	public function newAll()
+	{
+		$tickets = $this->ticket->latest();
+	
+		return $tickets->get();
+	}
+
+	public function projects()
+	{
+		$tickets = $this->ticket->select('project')->distinct()->get();
+		foreach ($tickets as $ticket) {
+       		$projects[] = $ticket->project;
+       }
+
+       return $projects;
+	}
+
+	public function channels()
+	{
+		$tickets =  $this->ticket->select('channel')->distinct()->get();
+		foreach ($tickets as $ticket) {
+       		$channels[] = $ticket->channel;
+       }
+
+       return $channels;
+	}
+
+	public function assignees()
+	{
+		$tickets =  $this->ticket->select('department_id')->distinct()->get();
+		foreach ($tickets as $ticket) {
+       		$assignees[] = ($ticket->assignee)->name;
+       }
+
+       return $assignees;
+	}
+
+	public function permissions()
+	{
+		$permissions = generateTicketPermission($this->projects(), 'projects');
+		$permissions = array_merge($permissions, generateTicketPermission($this->channels(), 'channels'));
+		$permissions = array_merge($permissions, generateTicketPermission($this->assignees(), 'assignees'));
+
+		return $permissions;
 	}
 
 	public function projectsOverview(){

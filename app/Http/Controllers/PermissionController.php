@@ -13,7 +13,8 @@ class PermissionController extends Controller
     
 	protected $permission;
 
-	public function __construct(PermissionInterface $permission){
+	public function __construct(PermissionInterface $permission)
+    {
 		$this->permission = $permission;
 	}
 
@@ -24,11 +25,26 @@ class PermissionController extends Controller
         $model = $user;
     	$rows = $this->permission->all();
     	$username = title_case($user->name);
+
+        $registered_permissions = $this->permission->registeredPermissions();
+
+        
+        if($user->hasRole('miscellaneous')){
+            $ticket_permissions =   $this->permission->ticketPermissions();
+        }
+
     	$title = "User({$username}) permissions";
         $action = "/permission";
         $user_role_update = true;
-    	return view('dashboard.permission.index', compact('rows','user_permissions','model','title','action','user_role_update'));
-
+    	return view('dashboard.permission.index', 
+            compact('rows',
+                    'user_permissions',
+                    'model',
+                    'title',
+                    'action',
+                    'user_role_update',
+                    'ticket_permissions',
+                    'registered_permissions'));
     }
 
     public function delete($permission_name)
