@@ -53,9 +53,25 @@ class TicketRepository implements TicketInterface {
 		return $timestamp.str_random($legnth);
 	}
 
-	public function all(){
+	public function all($userFilters = null){
 
+		print_r($userFilters);
 		$tickets = $this->ticket->latest();
+
+
+		if (null !== $userFilters && is_array($userFilters)){
+			foreach ($userFilters as $index => $values) {
+				if ($index !== 'assignee' ){
+	                $tickets->whereIn($index, $values);
+	                continue;
+				} 
+
+				$tickets->whereHas('assignee', function ($tickets) use ($values) {
+	                $tickets->whereIn('name',  $values);
+	            });
+			}
+		}
+
 		$tickets->filter(request(['startdate-filter','enddate-filter','project-filter','channel-filter','assignee-filter']));
 		return $tickets->get();
 	}
@@ -99,9 +115,9 @@ class TicketRepository implements TicketInterface {
 
 	public function permissions()
 	{
-		$permissions = generateTicketPermission($this->projects(), 'projects');
-		$permissions = array_merge($permissions, generateTicketPermission($this->channels(), 'channels'));
-		$permissions = array_merge($permissions, generateTicketPermission($this->assignees(), 'assignees'));
+		$permissions = generateTicketPermission($this->projects(), 'project');
+		$permissions = array_merge($permissions, generateTicketPermission($this->channels(), 'channel'));
+		$permissions = array_merge($permissions, generateTicketPermission($this->assignees(), 'assignee'));
 
 		return $permissions;
 	}
