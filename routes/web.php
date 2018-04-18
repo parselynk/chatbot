@@ -18,53 +18,46 @@ Route::get('/messenger', function () {
 
 Route::get('/sample', 'TicketController@index');
 
-Route::get('/', 'TicketController@index')->name('home'); 
+Route::get('/', 'TicketController@index')->name('home');
+Route::get('/home', 'TicketController@index');
 
 
-Route::get('/tickets', 'TicketController@tickets'); 
+Route::get('/tickets', 'TicketController@tickets')->middleware('auth.haspermission:sa-view-ticket');
 
 
 Route::get('/test', 'TicketController@test');
 Route::match(['get', 'post'], '/botman/{project}', 'BotManController@handle');
 Route::get('/botman/tinker', 'BotManController@tinker');
 
-Route::get('/login','SessionController@create')->name('login');
-Route::post('/login','SessionController@store');
-Route::get('/logout','SessionController@destroy');
-Route::get('/register','RegistrationController@create');
-Route::post('/register','RegistrationController@store');
-Route::get('/profile','UserController@profile');
-Route::post('/profile/update','SessionController@update');
+Route::get('/login', 'SessionController@create')->name('login');
+Route::post('/login', 'SessionController@store');
+Route::get('/logout', 'SessionController@destroy');
+Route::get('/register', 'RegistrationController@create')->middleware('auth.haspermission:sa-create-user');
+Route::post('/register', 'RegistrationController@store')->middleware('auth.haspermission:sa-create-user');
+Route::get('/profile', 'UserController@profile');
+Route::post('/profile/update', 'SessionController@update');
 
-Route::get('/resetpassword','UserController@resetPassword');
-Route::post('/resetpassword','SessionController@resetPassword');
+Route::get('/resetpassword', 'UserController@resetPassword');
+Route::post('/resetpassword', 'SessionController@resetPassword');
 
-Route::get('/forgotpassword','ForgetPasswordController@askForEmail');
-Route::post('/forgotpassword','ForgetPasswordController@sendToken');
+Route::get('/forgotpassword', 'ForgetPasswordController@askForEmail')->middleware('guest');
+Route::post('/forgotpassword', 'ForgetPasswordController@sendToken')->middleware('guest');
 
-Route::get('/resetpassword/{token}','ForgetPasswordController@askForNewPassword');
-Route::post('/resetforgottenpassword','ForgetPasswordController@store');
-
-
-Route::get('/user','UserController@index');
-Route::post('/user/role','UserController@updateRole');
-
-Route::get('/permission/{user}','PermissionController@index');
-Route::post('/permission','PermissionController@update');
-
-Route::get('/permission','PermissionController@create');
-Route::get('/permission/delete/{permission}','PermissionController@delete');
-
-Route::post('/permission/create','PermissionController@store');
+Route::get('/resetpassword/{token}', 'ForgetPasswordController@askForNewPassword')->middleware('guest');
+Route::post('/resetforgottenpassword', 'ForgetPasswordController@store')->middleware('guest');
 
 
-Route::get('/role','RoleController@index');
-Route::post('/role','RoleController@update');
+Route::get('/user', 'UserController@index');
+Route::post('/user/role', 'UserController@updateRole');
 
-Route::get('/role/{role}','RoleController@permissions');
+Route::get('/permission/{user}', 'PermissionController@index')->middleware('auth.haspermission:sa-update-user');
+Route::post('/permission', 'PermissionController@update')->middleware('auth.haspermission:sa-update-user');
 
+Route::get('/permission', 'PermissionController@create')->middleware('auth.haspermission:sa-create-permission');
+Route::post('/permission/create', 'PermissionController@store')->middleware('auth.haspermission:sa-create-permission');
+Route::get('/permission/delete/{permission}', 'PermissionController@delete')->middleware('auth.haspermission:sa-delete-permission');
+;
+Route::get('/role', 'RoleController@index')->middleware('auth.haspermission:sa-view-role');
+Route::post('/role', 'RoleController@update')->middleware('auth.haspermission:sa-update-role');
 
-
-
-
-
+Route::get('/role/{role}', 'RoleController@permissions')->middleware('auth.haspermission:sa-view-role');
