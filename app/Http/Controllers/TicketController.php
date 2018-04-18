@@ -9,43 +9,46 @@ use App\Assignee;
 class TicketController extends Controller
 {
     
-	protected $ticket;
+    protected $ticket;
 
-	public function __construct(TicketInterface $ticket){
+    public function __construct(TicketInterface $ticket)
+    {
         
         $this->middleware('auth');
-		$this->ticket = $ticket;
-	}
+        $this->ticket = $ticket;
+    }
 
     // public function index(){
-    // 	//return view('posts.index', compact('posts','archives'));
+    //  //return view('posts.index', compact('posts','archives'));
     //     return view('layout.master');
     // }
 
-    public function index(){
+    public function index()
+    {
         
         $user = auth()->user();
-        $userFilters = userTicketPermission($user , ['assignee','project','channel']);
+        $userFilters = userTicketPermission($user, ['assignee','project','channel']);
         $tickets = $this->ticket->all($userFilters);
         $projects = $this->ticket->projectsOverview();
         $assignees = $this->ticket->assigneesOverview();
         $channels = $this->ticket->channelsOverview();
         $filters = $this->ticket->availableFilters();
-        return view('dashboard.index', compact('tickets','projects','assignees','channels','filters','user'));
+        return view('dashboard.index', compact('tickets', 'projects', 'assignees', 'channels', 'filters', 'user'));
     }
 
-    public function tickets(){
+    public function tickets()
+    {
         
         $user = auth()->user();
-        $userFilters = userTicketPermission($user , ['assignee','project','channel']);
+        $userFilters = userTicketPermission($user, ['assignee','project','channel']);
         $tickets = $this->ticket->all($userFilters);
         $filters = $this->ticket->availableFilters();
-        return view('dashboard.tickets', compact('tickets','filters','user'));
+        return view('dashboard.tickets', compact('tickets', 'filters', 'user'));
     }
 
-    public function test(){
-    	$ticket = new Ticket;
-    	dd($this->ticket->availableFilters());
-
+    public function test()
+    {
+        $ticket = new Ticket;
+        dd($this->ticket->availableFilters());
     }
 }
