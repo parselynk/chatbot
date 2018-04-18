@@ -7,7 +7,9 @@
             @include('dashboard.overview.card', ['items' => $assignees , 'title' => 'Assignees Overview'])
             @include('dashboard.overview.card', ['items' => $channels , 'title' => 'Channels Overview'])
 		@else
-            @include('dashboard.overview.table', ['title' => 'Tickets oververview'])
+            @can('sa-view-ticket')
+                @include('dashboard.overview.table', ['title' => 'Tickets oververview'])
+            @endcan
         @endhasanyrole
         </div>
     </div>
