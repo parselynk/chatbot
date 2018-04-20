@@ -7,59 +7,61 @@ use App\Repositories\Contracts\PermissionInterface;
 use Illuminate\Support\Facades\Log;
 use App\User;
 
-
 class PermissionController extends Controller
 {
     
-	protected $permission;
+    protected $permission;
 
-	public function __construct(PermissionInterface $permission)
+    public function __construct(PermissionInterface $permission)
     {
-		$this->permission = $permission;
-	}
+        $this->permission = $permission;
+    }
 
     public function index(User $user)
     {
 
-    	$user_permissions = $user->getAllPermissions();
+        $user_permissions = $user->getAllPermissions();
         $model = $user;
-    	$rows = $this->permission->all();
-    	$username = title_case($user->name);
+        $rows = $this->permission->all();
+        $username = title_case($user->name);
 
         $registered_permissions = $this->permission->registeredPermissions();
 
         
-        if($user->hasRole('miscellaneous')){
+        if ($user->hasRole('miscellaneous')) {
             $ticket_permissions =   $this->permission->ticketPermissions();
         }
 
-    	$title = "User({$username}) permissions";
+        $title = "User({$username}) permissions";
         $action = "/permission";
         $user_role_update = true;
-    	return view('dashboard.permission.index', 
-            compact('rows',
-                    'user_permissions',
-                    'model',
-                    'title',
-                    'action',
-                    'user_role_update',
-                    'ticket_permissions',
-                    'registered_permissions'));
+        return view(
+            'dashboard.permission.index',
+            compact(
+                'rows',
+                'user_permissions',
+                'model',
+                'title',
+                'action',
+                'user_role_update',
+                'ticket_permissions',
+                'registered_permissions'
+            )
+        );
     }
 
     public function delete($permission_name)
     {
 
-        if(empty($permission_name) || !isset($permission_name)){
+        if (empty($permission_name) || !isset($permission_name)) {
             return back()->withErrors([
                 "message" => "No permission is selected"
-            ]); 
+            ]);
         }
 
-        try{
+        try {
             $this->permission->delete($permission_name);
-
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             Log::error($e->getMessage());
             report($e);
             return back()->withErrors([
@@ -67,25 +69,23 @@ class PermissionController extends Controller
             ]);
         }
         Cache()->flush();
-        session()->flash('message','Permission is deleted');
+        session()->flash('message', 'Permission is deleted');
         return redirect()->back();
-       
     }
 
     public function update()
     {
-    	try{
-			$this->permission->update();
-
-        } catch(\Exception $e){
-        	Log::error($e->getMessage());
-        	report($e);
+        try {
+            $this->permission->update();
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            report($e);
             return back()->withErrors([
                 "message" => " Somthing gone wrong, please try again"
             ]);
         }
 
-        session()->flash('message','User\'s permissions are updated');
+        session()->flash('message', 'User\'s permissions are updated');
         return redirect()->back();
     }
 
@@ -96,9 +96,9 @@ class PermissionController extends Controller
 
         $available_actions = [];
 
-        foreach(config('navigations')['navigations'] as $name => $groups){
-           foreach($groups as $name => $nav){
-                if($nav['permission']){
+        foreach (config('navigations')['navigations'] as $name => $groups) {
+            foreach ($groups as $name => $nav) {
+                if ($nav['permission']) {
                     $available_actions[] =  $nav['permission'];
                 }
             }
@@ -106,40 +106,99 @@ class PermissionController extends Controller
 
         $remaining_permissions = array_diff($available_actions, $registered_permissions);
 
-
-        // $sorted = array_map(function($value){
-        //     $seperated = explode('-',$value);
-        //     $key = '';
-        //     $key  .=  strtolower($seperated[0]) == 'sa' ? 'Super Admin' : ((strtolower($seperated[0]) == 'a') ? 'Admin' : 'Miscellaneous');
-        //     return  [$key => $value] ;
-
-        // }, $remaining_permissions);
-
-
         $title = "Permissions";
-        return view('dashboard.permission.create', compact('rows','title','remaining_permissions'));
+        return view('dashboard.permission.create', compact('rows', 'title', 'remaining_permissions'));
     }
 
     public function store()
     {
-        $this->validate(request(), 
+        $this->validate(
+            request(),
             ['permission' => 'required']
         );
 
-    $name = request('permission');
-    $guard = null !== request('guard_name') ? request('guard_name') : null ;
-    try{
-        $this->permission->create($name, $guard);
-        } catch(\Exception $e){
+        $name = request('permission');
+        $guard = null !== request('guard_name') ? request('guard_name') : null ;
+        try {
+            $this->permission->create($name, $guard);
+        } catch (\Exception $e) {
             Log::error($e->getMessage());
             report($e);
             return back()->withErrors([
-                "message" => $e->getMessage()
+            "message" => $e->getMessage()
             ]);
         }
-        session()->flash('message','New permission  "'. $name .'"  is registered');
+        session()->flash('message', 'New permission  "'. $name .'"  is registered');
         return redirect()->back();
-     }
+    }
+
+    public function projects(User $user)
+    {
+        $user_permissions = $user->getAllPermissions();
+        $username = title_case($user->name);
+
+        $registered_permissions = $this->permission->registeredPermissions();
+
+        
+        if ($user->hasRole('miscellaneous')) {
+            $ticket_permissions =   $this->permission->ticketPermissions();
+            $projects = array_keys($ticket_permissions);
+        }
+
+        $action = url("permission/{$user->id}/ticket");
+        $page_title = "User({$username}) ticket permissions";
+        $user_role_update = true;
+        $project = '';
+       
+        return view(
+            'dashboard.permission.ticketpermissiontable',
+            compact(
+                'user_permissions',
+                'user',
+                'page_title',
+                'projects',
+                'project',
+                'action',
+                'registered_permissions'
+            )
+        );
+    }
+
+
+    public function projectPermissions(User $user, $project)
+    {
+        
+
+        $user_permissions = $user->getAllPermissions();
+        $username = title_case($user->name);
+
+        $registered_permissions = $this->permission->registeredPermissions();
+
+        
+        if ($user->hasRole('miscellaneous')) {
+            $ticket_permissions =   $this->permission->ticketPermissions();
+            $projects = array_keys($ticket_permissions);
+        }
+
+        $page_title = "User({$username}) ticket permissions";
+        $action = url("permission/{$user->id}/ticket");
+        $user_role_update = true;
+       
+        return view(
+            'dashboard.permission.ticketpermissiontable',
+            compact(
+                'user_permissions',
+                'user',
+                'page_title',
+                'action',
+                'projects',
+                'project',
+                'user_role_update',
+                'ticket_permissions',
+                'registered_permissions'
+            )
+        );
+    }
 
     // create
     // update

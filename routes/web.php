@@ -16,8 +16,6 @@ Route::get('/messenger', function () {
     return view('welcome');
 });
 
-Route::get('/sample', 'TicketController@index');
-
 Route::get('/', 'TicketController@index')->name('home');
 Route::get('/home', 'TicketController@index');
 
@@ -51,12 +49,16 @@ Route::get('/user', 'UserController@index');
 Route::post('/user/role', 'UserController@updateRole');
 
 Route::get('/permission/{user}', 'PermissionController@index')->middleware('auth.haspermission:sa-update-user');
+Route::get('/permission/{user}/ticket', 'PermissionController@projects');
+Route::get('/permission/{user}/ticket/{project}', 'PermissionController@projectPermissions');
+
+
 Route::post('/permission', 'PermissionController@update')->middleware('auth.haspermission:sa-update-user');
 
 Route::get('/permission', 'PermissionController@create')->middleware('auth.haspermission:sa-create-permission');
 Route::post('/permission/create', 'PermissionController@store')->middleware('auth.haspermission:sa-create-permission');
 Route::get('/permission/delete/{permission}', 'PermissionController@delete')->middleware('auth.haspermission:sa-delete-permission');
-;
+
 Route::get('/role', 'RoleController@index')->middleware('auth.haspermission:sa-view-role');
 Route::post('/role', 'RoleController@update')->middleware('auth.haspermission:sa-update-role');
 

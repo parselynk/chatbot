@@ -1,104 +1,101 @@
-<?php 
+<?php
 
 namespace App\Repositories;
+
 use App\Repositories\Contracts\PermissionInterface;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Traits\HasRoles;
 use App\Repositories\Contracts\TicketInterface;
 use App\User;
 
-
-
-
 class PermissionRepository implements PermissionInterface
 {
-	
+    
     use HasRoles;
-	protected $user;
-	protected $ticket;
+    protected $user;
+    protected $ticket;
 
-	public function __construct(TicketInterface $ticket, $user)
-	{
-		$this->user = $user;
-		$this->ticket = $ticket;
-	}
-
-
-	public function all()
-	{
-		$permissions = $this->systemPermissions();
-		return prepare_permissions($permissions);
-	}
-
-	public function registeredPermissions()
-	{
-		return array_flatten(Permission::select('name')->get()->toArray());
-	}
-
-	public function ticketPermissions()
-	{
-       $permissions = $this->ticket->permissions();
-       
-       return prepare_ticket_permissions($permissions);
-	}
-
-	public function systemPermissions()
-	{
-		return Permission::get();
-	}
+    public function __construct(TicketInterface $ticket, $user)
+    {
+        $this->user = $user;
+        $this->ticket = $ticket;
+    }
 
 
-	public function update(){
-		
-		$permissions = request()->all();
-		unset($permissions["_token"]);
-		$user = $this->user->find(request('model-id'));
-		unset($permissions["model-id"]);
+    public function all()
+    {
+        $permissions = $this->systemPermissions();
+        return prepare_permissions($permissions);
+    }
 
-		foreach($permissions as $permission){
+    public function registeredPermissions()
+    {
+        return array_flatten(Permission::select('name')->get()->toArray());
+    }
 
-	   		Permission::firstOrCreate(['name' => $permission]);
+    public function ticketPermissions()
+    {
 
-		}
+        $permissions = $this->ticket->permissions();
 
-		$user->revokePermissionTo($user->getAllPermissions());
-            if(!$user->givePermissionTo($permissions)){
-            	throw new \Exception();
-            }
+        return prepare_ticket_permissions($permissions);
+    }
+
+    public function systemPermissions()
+    {
+        return Permission::get();
+    }
+
+
+    public function update()
+    {
+        
+        $permissions = request()->all();
+        unset($permissions["_token"]);
+        $user = $this->user->find(request('model-id'));
+        unset($permissions["model-id"]);
+
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(['name' => $permission]);
+        }
+
+        $user->revokePermissionTo($user->getAllPermissions());
+        if (!$user->givePermissionTo($permissions)) {
+            throw new \Exception();
+        }
        
         return true;
-	}
+    }
 
-	protected  function exists($name, $guard = null)
-	{
-		$prmission_exist = ($guard) ? 
-			Permission::where('name' , $name) : 
-			Permission::where('name' , $name)->where('guard_name' , $guard);
-	   if( $prmission_exist->count() === 0) {
-	   		return false;
-	   }
+    protected function exists($name, $guard = null)
+    {
+        $prmission_exist = ($guard) ?
+            Permission::where('name', $name) :
+            Permission::where('name', $name)->where('guard_name', $guard);
+        if ($prmission_exist->count() === 0) {
+            return false;
+        }
 
-	   return true;
-	}
+        return true;
+    }
 
-	public function create($name, $guard = null){
-		
-	   if( !$this->exists($name, $guard)) {
-	   		return Permission::create(['name' => $name]);
-	   }
+    public function create($name, $guard = null)
+    {
+        
+        if (!$this->exists($name, $guard)) {
+            return Permission::create(['name' => $name]);
+        }
 
-	   throw new \Exception('Permission already Exist');
-	}
+        throw new \Exception('Permission already Exist');
+    }
 
 
     public function delete($permission_name)
     {
-    	$query = Permission::where('name' , 'like' , '%-'.$permission_name);
-        if ($query->count() === 0){
+        $query = Permission::where('name', 'like', '%-'.$permission_name);
+        if ($query->count() === 0) {
             throw new \Exception('Permission does not exist.');
         }
         return $query->delete();
     }
 }
-
-
