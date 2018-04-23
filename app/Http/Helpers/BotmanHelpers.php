@@ -33,16 +33,34 @@ function prepare_permissions($permissions)
 function prepare_ticket_permissions($permissions)
 {
     if (is_array($permissions) && count($permissions) === 0) {
-            return $permissions_list;
+            return [];
     }
     $permissions_list = [];
 
     foreach ($permissions as $permission) {
-        $permission_array = explode('-', $permission);
+        $permission_array = explode('-', strtolower($permission));
         if (count($permission_array) === 5) {
             $key = $permission_array[2];
             $permissions_list[$key]["assignees"][$permission_array[3]] = $permission;
             $permissions_list[$key]["channels"][$permission_array[4]] = $permission;
+        }
+    }
+    return $permissions_list;
+}
+
+function generateUserTicketPermission($permissions)
+{
+
+    if (is_array($permissions) && count($permissions) === 0) {
+            return [];
+    }
+
+    $permissions_list = [];
+
+    foreach ($permissions as $permission) {
+        $permission_array = explode('-', $permission->name);
+        if (count($permission_array) === 5) {
+            $permissions_list[] = $permission->name;
         }
     }
     return $permissions_list;

@@ -29,7 +29,8 @@ class PermissionController extends Controller
 
         
         if ($user->hasRole('miscellaneous')) {
-            $ticket_permissions =   $this->permission->ticketPermissions();
+            $user_ticket_permissions = generateUserTicketPermission($user->getAllPermissions());
+            $ticket_permissions = prepare_ticket_permissions($user_ticket_permissions);
         }
 
         $title = "User({$username}) permissions";

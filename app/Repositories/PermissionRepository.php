@@ -46,20 +46,29 @@ class PermissionRepository implements PermissionInterface
         return Permission::get();
     }
 
+    public function permissionsToReset($user)
+    {
+        $is_ticket_permission = request('ticket-permission');
+        return isset($is_ticket_permission) ?  generateUserTicketPermission($user->getAllPermissions()) : $user->getAllPermissions();
+    }
+
 
     public function update()
     {
         
         $permissions = request()->all();
+        //$ticket_permission = request('ticket-permission');
         unset($permissions["_token"]);
+        unset($permissions["ticket-permission"]);
         $user = $this->user->find(request('model-id'));
+
         unset($permissions["model-id"]);
 
         foreach ($permissions as $permission) {
             Permission::firstOrCreate(['name' => $permission]);
         }
 
-        $user->revokePermissionTo($user->getAllPermissions());
+        $user->revokePermissionTo($this->permissionsToReset($user));
         if (!$user->givePermissionTo($permissions)) {
             throw new \Exception();
         }

@@ -7,7 +7,7 @@
       <div class="card-body">
         {{ csrf_field() }}
           <table class="table table-hover table-responsive-md table-light">
-            <thead class="text-center">
+            <thead class="">
               <tr>
                 <th scope="col">Action</th>
                 <th scope="col">View</th>
@@ -16,7 +16,7 @@
                 <th scope="col">Delete</th>
               </tr>
             </thead>
-             <tfoot class="text-center">
+             <tfoot class="">
               <tr>
                 <th scope="col">Action</th>
                 <th scope="col">View</th>
@@ -34,7 +34,7 @@
                   </tr>
                 </thead>
                 @foreach($items as $index=>$row )
-                  <tr class="text-center">
+                  <tr class="">
                     <th scope="row">{{ title_case($index) }}</th>
                       <td >
                         @if(array_key_exists('view', $row))
@@ -43,21 +43,21 @@
                           NA
                         @endif
                       </td>
-                      <td class="text-center">                             
+                      <td class="">                             
                         @if(array_key_exists('create', $row))
                           <input name="{{$row['create']}}" data-type="create" type="checkbox" value ="{{$row['create']}}" {{($model->hasPermissionTo($row['create'])) ? "checked" : "" }} >
                         @else 
                           NA
                         @endif
                       </td>
-                      <td class="text-center">
+                      <td class="">
                         @if(array_key_exists('update', $row))
                           <input name="{{$row['update']}}" data-type="update" type="checkbox" value ="{{$row['update']}}" {{($model->hasPermissionTo($row['update'])) ? "checked" : "" }}>
                         @else 
                           NA
                         @endif
                       </td>
-                      <td class="text-center">
+                      <td class="">
                         @if(array_key_exists('delete', $row))
                           <input name="{{$row['delete']}}" data-type="delete" type="checkbox" value ="{{$row['delete']}}" {{($model->hasPermissionTo($row['delete'])) ? "checked" : "" }}>
                         @else 
@@ -69,49 +69,83 @@
               @endforeach
             </tbody>
           </table>
-          @if(!isset($ticket_permissions) || count($ticket_permissions) === 0 ) 
-            <div class="row float-right p-3">
-                <button type="submit" class="btn btn-primary">Save changes</button>
-            </div>
-          @endif
-      </div>
+        @if (isset($model->id))
+          <input name="model-id" type="hidden" value ="{{$model->id}}">
+        @endif
+        <div class="row float-right p-3">
+            <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
     </div>
-    @endif
-    @if(isset($ticket_permissions) && count($ticket_permissions) > 0)
+  </div>
+@endif
+@if( ends_with(get_class($model),'User') && $model->hasRole('miscellaneous') )
+
+</form>   
       <div class="card">
           <div class="card-header bg-light">
               Access Permissions 
           </div>
           <div class="card-body">
-            <div class="card-group">
-              @foreach($ticket_permissions as $title=>$permissions)
-                <div class="card m-4 p-0 ">
-                  <div class="card-block ">
-                      <span class="h4 d-block font-weight-normal p-2">{{ $title }}</span>
-                      <ul class="list-group list-group-flush">
-                          @foreach($permissions as $permission=>$row)
-                              <li class="list-group-item"> 
-                                @if(array_key_exists('view', $row))
-                                  &nbsp;&nbsp;<input name="{{title_case($row['view'])}}" data-type="view" type="checkbox" value ="{{strtolower($row['view'])}}" 
-                                  {{ (in_array(strtolower($row['view']), $registered_permissions)) ? ($model->hasPermissionTo(strtolower($row['view']))) ? "checked" : "" : ""}} >
-                                  <strong>{{ title_case($permission) }} </strong>
-                                @endif
-                              </li>
+          @if(isset($ticket_permissions) && count($ticket_permissions) > 0)
+            <table class="table table-hover table-responsive-md table-light">
+              <thead class="">
+                <tr>
+                  <th scope="col">Project</th>
+                  <th scope="col">Assignee(s)</th>
+                  <th scope="col">Channel(s)</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+               <tfoot class="">
+                <tr>
+                  <th scope="col">Project</th>
+                  <th scope="col">Assignee(s)</th>
+                  <th scope="col">Channel(s)</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                @foreach($ticket_permissions as $project=>$permissions)
+                 <tr class="">
+                    <td class="">  
+                      {{strtoupper($project)}}
+                    </td>
+                    <td class="">  
+                      @if(isset($permissions['assignees']) && $permissions['assignees'] != '')      
+                        <ul class="list-unstyled">                     
+                          @foreach($permissions['assignees']  as $assignee=>$items)
+                             <li class="mt-1"> - {{title_case($assignee)}}</li>
                           @endforeach
-                      </ul> 
-                    </div>
-                </div>
-              @endforeach
-            </div> 
-            <div class="row float-right p-3">
-                <button type="submit" class="btn btn-primary">Save changes</button>
-            </div>
+                        </ul>
+                      @endif
+                    </td>
+                    <td class="">  
+                      @if(isset($permissions['channels']) && $permissions['channels'] != '')    
+                        <ul class="list-unstyled">                     
+                          @foreach($permissions['channels']  as $channel=>$items)
+                             <li class="mt-1"> - {{title_case($channel)}}</li>
+                          @endforeach
+                        </ul>
+                      @endif
+                    </td>
+                    <td class="">  
+                      <a class="btn btn-primary" href="{{url("permission/{$model->id}/ticket/$project")}}" role="button">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                      </a>
+                    </td>
+                 </tr>
+                @endforeach
+              </tbody>
+            </table>
+           @else
+              <p class="text-danger">This user has no permission to access tickets.</p>
+           @endif
+          <div class="row float-right p-3">
+            @if (isset($model->id))
+              <a class="btn btn-primary" href="{{url("permission/{$model->id}/ticket")}}" role="button">Add ticket permission</a>
+            @endif
+          </div>
         </div>
-        </div>
-@endif 
-
-  @if (isset($model->id))
-    <input name="model-id" type="hidden" value ="{{$model->id}}">
-  @endif
-</form>   
+      @endif
+      </div>
 

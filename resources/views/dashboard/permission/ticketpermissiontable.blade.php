@@ -1,35 +1,3 @@
-<!-- @if(isset($ticket_permissions) && count($ticket_permissions) > 0)
-  <div class="card">
-      <div class="card-header bg-light">
-          Ticket Permissions 
-      </div>
-        <div class="card-body">
-          <div class="card-group">
-            @foreach($ticket_permissions as $title=>$permissions)
-              <div class="card m-4 p-0 ">
-                <div class="card-block ">
-                      <span class="h4 d-block font-weight-normal p-2">{{ $title }}</span>
-                    <ul class="list-group list-group-flush">
-                        @foreach($permissions as $permission=>$row)
-                            <li class="list-group-item"> 
-                              @if(array_key_exists('view', $row))
-                                &nbsp;&nbsp;<input name="{{title_case($row['view'])}}" data-type="view" type="checkbox" value ="{{strtolower($row['view'])}}" 
-                                {{ (in_array(strtolower($row['view']), $registered_permissions)) ? ($model->hasPermissionTo(strtolower($row['view']))) ? "checked" : "" : ""}} >
-                                <strong>{{ title_case($permission) }} </strong>
-                              @endif
-                            </li>
-                        @endforeach
-                    </ul> 
-                  </div>
-              </div>
-            @endforeach
-          </div> 
-          <div class="row float-right p-3">
-              <button type="submit" class="btn btn-primary">Save changes</button>
-          </div>
-      </div>
-    </div>
-@endif  -->
 @extends('layout.master')
 @section('content')
     <div class="content">
@@ -47,10 +15,10 @@
                    <form class="form-inline" method="post" action="{{ $action }}">
                     <div class="form-group">
                       <label for="ticket-project-select" class="mb-3 mr-1" >Project:</label>
-                      <select id="ticket-project-select" class="form-control mb-3 mr-sm-3" name="ticket-project-filter">
+                      <select id="ticket-project-select" class="form-control mb-3 mr-sm-3" name="ticket-project-filter" {{ $project !== '' ? "disabled" : ""}}>
                         <option value>Select a project</option>
                         @foreach ( $projects as $project_name)
-                          <option value="{{$project_name}}"  {{ strtolower($project) ===  strtolower($project_name) ? "selected" : "" }}>{{$project_name}}</option>
+                          <option value="{{$project_name}}"  {{ strtolower($project) ===  strtolower($project_name) ? "selected" : "" }}>{{strtoupper($project_name)}}</option>
                         @endforeach
                       </select>  
                     </div>
@@ -83,7 +51,8 @@
                         </ul> 
                       </div>
                   </div>
-                    <input name="model-id" data-type="view" type="hidden" value ="{{ $user->id }}" >
+                    <input name="model-id" data-type="view" type="hidden" value ="{{ $user->id }}" > 
+                    <input name="ticket-permission" data-type="view" type="hidden" value ="ticket-permission" >
                     <div class="form-group float-right p-3 mr-2">
                       <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
