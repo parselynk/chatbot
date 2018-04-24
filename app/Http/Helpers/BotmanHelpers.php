@@ -65,32 +65,28 @@ function generateUserTicketPermission($permissions)
     }
     return $permissions_list;
 }
-
-function userTicketPermission($user, $permission_group)
+/**
+ * [Prepares filter based on user's permissions]
+ * @param  [Object] $user [App\User]
+ * @return [array]        [Filter array]
+ */
+function userTicketPermission($user)
 {
     $permissions_list = [];
-    
-    if (!isset($user) || !$user || !isset($permission_group)
-        || !is_array($permission_group) || count($permission_group) < 1) {
-            return $permissions_list;
+    if (!isset($user) || !$user) {
+        return $permissions_list;
     }
     
     $permissions = $user->permissions;
 
-
-    foreach ($permission_group as $group) {
-        foreach ($permissions as $permission) {
-            $permission_array = explode('-', $permission->name);
-
-            if (count($permission_array) === 4) {
-                $last_segment = $permission_array[3];
-                if (strtolower($group) === $last_segment) {
-                    $permissions_list[$group][] = $permission_array[2];
-                }
-            }
+    foreach ($permissions as $permission) {
+        $permission_array = explode('-', $permission->name);
+        if (count($permission_array) === 5) {
+            $permissions_list['channel'][] = $permission_array[4];
+            $permissions_list['assignee'][] = $permission_array[3];
+            $permissions_list['project'][] = $permission_array[2];
         }
     }
-
     return $permissions_list;
 }
 

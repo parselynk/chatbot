@@ -27,12 +27,12 @@ class TicketController extends Controller
     {
         
         $user = auth()->user();
-        $userFilters = userTicketPermission($user, ['assignee','project','channel']);
+        $userFilters = userTicketPermission($user);
         $tickets = $this->ticket->all($userFilters);
         $projects = $this->ticket->projectsOverview();
         $assignees = $this->ticket->assigneesOverview();
         $channels = $this->ticket->channelsOverview();
-        $filters = $this->ticket->availableFilters();
+        $filters = ($user->isSuperAdmin() || $user->isAdmin()) ? $this->ticket->availableFilters() : $userFilters;
         return view('dashboard.index', compact('tickets', 'projects', 'assignees', 'channels', 'filters', 'user'));
     }
 
@@ -40,9 +40,9 @@ class TicketController extends Controller
     {
         
         $user = auth()->user();
-        $userFilters = userTicketPermission($user, ['assignee','project','channel']);
+        $userFilters = userTicketPermission($user);
         $tickets = $this->ticket->all($userFilters);
-        $filters = $this->ticket->availableFilters();
+        $filters = ($user->isSuperAdmin() || $user->isAdmin()) ? $this->ticket->availableFilters() : $userFilters;
         return view('dashboard.tickets', compact('tickets', 'filters', 'user'));
     }
 

@@ -59,8 +59,6 @@ class TicketRepository implements TicketInterface
     {
 
         $tickets = $this->ticket->latest();
-
-
         if (null !== $userFilters && is_array($userFilters)) {
             foreach ($userFilters as $index => $values) {
                 if ($index !== 'assignee') {
@@ -159,10 +157,21 @@ class TicketRepository implements TicketInterface
            $project = $this->ticket->selectRaw('null as assignee, project, null as channel')
                              ->groupBy('project');
         
-        return $this->ticket->selectRaw('null as assignee, null as project, channel')
+        $rawFilters = $this->ticket->selectRaw('null as assignee, null as project, channel')
                              ->groupBy('channel')
                              ->union($department)
                              ->union($project)
-                             ->get();
+                             ->get()->toArray();
+           
+                 $sortedFilters = [];
+        foreach ($rawFilters as $filters) {
+            foreach ($filters as $key => $value) {
+                if (!is_null($value)) {
+                    $sortedFilters[$key][] = $value;
+                }
+            }
+        }
+
+        return  $sortedFilters;
     }
 }

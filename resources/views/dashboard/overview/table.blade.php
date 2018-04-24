@@ -17,55 +17,49 @@
                 </div>
                     <select id="project-select" class="form-control mb-3 mr-sm-3 col-1" name="project-filter">
                         <option value>All Projects</option>
-                        @foreach($filters as $filter)
-                            @if($filter['project'])
-                                @if( $user->hasAnyRole(['super admin','admin']) || 
-                                    $user->can('ms-view-'.strtolower($filter['project']).'-project'))  
-                                    <option value="{{$filter['project']}}" 
-                                        @if(request('project-filter') && request('project-filter') == $filter['project']) 
+                        @foreach($filters as $filter=>$items)
+                            @if($filter === 'project')
+                                @foreach ($items as $item)
+                                    <option value="{{ $item }}" 
+                                        @if(request('project-filter') && request('project-filter') == $item ) 
                                             selected
-                                        @endif
-                                    >{{$filter['project']}}
+                                        @endif 
+                                        >
+                                        {{ strtoupper($item) }}
                                     </option>
-                                @else
-                                    { continue; }
-                                @endif
+                                @endforeach
                             @endif
                         @endforeach
                     </select>
                     <select id="channel-select" class="form-control mb-3 mr-sm-3 col-1" name="channel-filter">
                         <option value>All Channels</option>
-                        @foreach($filters as $filter)
-                            @if($filter['channel'])
-                                @if( $user->hasAnyRole(['super admin','admin']) || 
-                                    $user->can('ms-view-'.strtolower($filter['channel']).'-channel'))  
-                                    <option value="{{$filter['channel']}}"
-                                    @if(request('channel-filter') && request('channel-filter') == $filter['channel']) 
-                                        selected
-                                    @endif
-                                    >{{$filter['channel']}}
+                        @foreach($filters as $filter=>$items)
+                            @if($filter === 'channel')
+                                @foreach ($items as $item)
+                                    <option value="{{$item}}"
+                                        @if(request('channel-filter') && request('channel-filter') == $item ) 
+                                            selected
+                                        @endif
+                                        >
+                                        {{ title_case($item) }}
                                     </option>
-                                @else
-                                    { continue; }
-                                @endif
+                                @endforeach
                             @endif
                         @endforeach
                     </select>
                     <select id="assignee-select" class="form-control mb-3 mr-sm-3 col-1" name="assignee-filter">
                         <option value>All Assignees</option>
-                        @foreach($filters as $filter)
-                            @if($filter['assignee'])
-                                @if( $user->hasAnyRole(['super admin','admin']) || 
-                                    $user->can('ms-view-'.strtolower($filter['assignee']).'-assignee'))  
-                                    <option value="{{$filter['assignee']}}"
-                                    @if(request('assignee-filter') && request('assignee-filter') == $filter['assignee']) 
-                                        selected
-                                    @endif
-                                    >{{$filter['assignee']}}
+                        @foreach($filters as $filter=>$items)
+                            @if($filter ===  'assignee')
+                                 @foreach ($items as $item)
+                                    <option value="{{$item}}"
+                                        @if(request('assignee-filter') && request('assignee-filter') == $item) 
+                                            selected
+                                        @endif
+                                    >
+                                    {{ title_case($item) }}
                                     </option>
-                                @else
-                                    { continue; }
-                                @endif
+                                @endforeach
                             @endif
                         @endforeach                             
                     </select>
