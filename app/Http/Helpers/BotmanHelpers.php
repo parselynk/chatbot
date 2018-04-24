@@ -56,7 +56,6 @@ function generateUserTicketPermission($permissions)
     }
 
     $permissions_list = [];
-
     foreach ($permissions as $permission) {
         $permission_array = explode('-', $permission->name);
         if (count($permission_array) === 5) {
@@ -78,7 +77,6 @@ function userTicketPermission($user)
     }
     
     $permissions = $user->permissions;
-
     foreach ($permissions as $permission) {
         $permission_array = explode('-', $permission->name);
         if (count($permission_array) === 5) {
@@ -87,7 +85,11 @@ function userTicketPermission($user)
             $permissions_list['project'][] = $permission_array[2];
         }
     }
-    return $permissions_list;
+
+    $result['channel'] = array_unique($permissions_list['channel']);
+    $result['assignee'] = array_unique($permissions_list['assignee']);
+    $result['project'] = array_unique($permissions_list['project']);
+    return $result;
 }
 
 
