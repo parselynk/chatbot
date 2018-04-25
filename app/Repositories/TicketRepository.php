@@ -59,21 +59,43 @@ class TicketRepository implements TicketInterface
     {
 
         $tickets = $this->ticket->latest();
-        if (null !== $userFilters && is_array($userFilters)) {
-            foreach ($userFilters as $index => $values) {
-                if ($index !== 'assignee') {
-                    $tickets->whereIn($index, $values);
-                    continue;
+        $user = auth()->user();
+        
+        if ($user->isAdmin() || $user->isSuperAdmin()) {
+             $tickets->filter(request(['startdate-filter','enddate-filter','project-filter','channel-filter','assignee-filter']));
+            return $tickets->get();
+        }
+
+        $isManager = false;
+
+        if (isset($userFilters['query']) && $userFilters['query'] != '' && is_array($userFilters['query'])) {
+            foreach ($userFilters['query'] as $index => $values) {
+                $assignees = array_unique($values['assignee']);
+                $channels = array_unique($values['channel']);
+                $project_name =  $index;
+
+                if (count($assignees) !== 0 || count($assignees) !== 0) {
+                    $isManager = true;
                 }
 
-                $tickets->whereHas('assignee', function ($tickets) use ($values) {
-                    $tickets->whereIn('name', $values);
+                $tickets->orWhere(function ($tickets) use ($project_name, $assignees, $channels) {
+
+                    $tickets->where('project', $project_name)
+                      ->whereIn('channel', $channels);
+
+                    $tickets->whereHas('assignee', function ($tickets) use ($assignees) {
+                        $tickets->whereIn('name', $assignees);
+                    });
                 });
             }
         }
 
-        $tickets->filter(request(['startdate-filter','enddate-filter','project-filter','channel-filter','assignee-filter']));
-        return $tickets->get();
+        if ($isManager) {
+            $tickets->filter(request(['startdate-filter','enddate-filter','project-filter','channel-filter','assignee-filter']));
+            return $tickets->get();
+        }
+
+        return [];
     }
 
     public function newAll()
